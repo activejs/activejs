@@ -646,7 +646,7 @@ Doesn't affect the current instance."
             [ajsRunClassOnChange]="queryUnit.events$ | async"
           >
             <code *ngIf="queryUnit.events$ | async as latestEvent">
-              <b>{{ latestEvent.constructor.name }}</b
+              <b>{{ latestEvent | ajsEventName }}</b
               ><br /><!--
               --><span class="block" [ajsAccordion]="collapseEventDetails">{{
                 latestEvent | filterOptions | safeJson
@@ -662,7 +662,7 @@ Doesn't affect the current instance."
             [ajsRunClassOnChange]="dataUnit.events$ | async"
           >
             <code *ngIf="dataUnit.events$ | async as latestEvent">
-              <b>{{ latestEvent.constructor.name }}</b
+              <b>{{ latestEvent | ajsEventName }}</b
               ><br /><!--
               --><span class="block" [ajsAccordion]="collapseEventDetails">{{
                 latestEvent | filterOptions | safeJson
@@ -678,7 +678,7 @@ Doesn't affect the current instance."
             [ajsRunClassOnChange]="errorUnit.events$ | async"
           >
             <code *ngIf="errorUnit.events$ | async as latestEvent">
-              <b>{{ latestEvent.constructor.name }}</b
+              <b>{{ latestEvent | ajsEventName }}</b
               ><br /><!--
               --><span class="block" [ajsAccordion]="collapseEventDetails">{{
                 latestEvent | filterOptions | safeJson
@@ -694,7 +694,7 @@ Doesn't affect the current instance."
             [ajsRunClassOnChange]="pendingUnit.events$ | async"
           >
             <code *ngIf="pendingUnit.events$ | async as latestEvent">
-              <b>{{ latestEvent.constructor.name }}</b
+              <b>{{ latestEvent | ajsEventName }}</b
               ><br /><!--
               --><span class="block" [ajsAccordion]="collapseEventDetails">{{
                 latestEvent | filterOptions | safeJson

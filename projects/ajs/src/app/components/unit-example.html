@@ -405,7 +405,7 @@ Doesn't affect the current instance."
             [ajsRunClassOnChange]="unit.events$ | async"
           >
             <code *ngIf="unit.events$ | async as latestEvent">
-              <b>{{latestEvent.constructor.name}}</b><br /><!--
+              <b>{{latestEvent | ajsEventName}}</b><br /><!--
               --><span class="block" [ajsAccordion]="collapseEventDetails"
                 >{{latestEvent | filterOptions | safeJson}}</span
               >

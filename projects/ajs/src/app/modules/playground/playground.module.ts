@@ -19,6 +19,7 @@ import {JsonPipe} from '../../pipes/json.pipe';
 import {FilterFalsyOptionsPipe} from '../../pipes/filter-falsy-options.pipe';
 import {EmptySpaceInArrayVizPipe} from '../../pipes/empty-space-in-array-viz.pipe';
 import {AccordionDirective} from '../../directives/accordion';
+import {EventNamePipe} from '../../pipes/event-name.pipe';
 
 const routes: Routes = [
   {
@@ -78,6 +79,7 @@ const routes: Routes = [
     RunClassDirective,
     EmptySpaceInArrayVizPipe,
     AccordionDirective,
+    EventNamePipe,
   ],
   imports: [
     CommonModule,

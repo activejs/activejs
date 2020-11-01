@@ -23,7 +23,7 @@
       <span class="input-label">Distinct Dispatch Check</span>
     </label>
 
-    <label class="input input-switcher mr">
+    <label class="input input-switcher mr" *ngIf="!unitIsPrimitiveType">
       <input type="checkbox" formControlName="immutable" />
       <span class="input-label">Immutable</span>
     </label>

@@ -10,7 +10,6 @@ import {
   ListUnit,
   NumUnit,
   StringUnit,
-  Unit,
   UnitBase,
 } from '@activejs/core';
 import {ExampleBaseAbstract} from './example-base';
@@ -25,6 +24,7 @@ export abstract class UnitExampleBaseAbstract<
 
   unit: UnitBase<any> & DictUnit<any> & ListUnit<any> & GenericUnit<any>;
   unitCachedValues = [];
+  unitIsPrimitiveType: boolean;
   abstract unitType: string;
 
   protected constructor(formBuilder: FormBuilder, cdRef: ChangeDetectorRef, ngZone: NgZone) {
@@ -45,6 +45,10 @@ export abstract class UnitExampleBaseAbstract<
     configOptions.initialValue = this.eval(configOptions.initialValue);
 
     this.unit = new unitClass(configOptions);
+    this.unitIsPrimitiveType =
+      this.unit instanceof BoolUnit ||
+      this.unit instanceof NumUnit ||
+      this.unit instanceof StringUnit;
 
     merge(this.unit, this.unit.events$ as Observable<any>)
       .pipe(debounceTime(200))

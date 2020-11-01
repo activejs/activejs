@@ -1,7 +1,7 @@
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ChangeDetectorRef, Directive, NgZone} from '@angular/core';
 
-import {ClearCacheOptions, DispatchOptions, UnitConfig} from '@activejs/core';
+import {DispatchOptions, UnitConfig} from '@activejs/core';
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix

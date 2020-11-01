@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/lib",
+    "target": "es5",
+    "declaration": true,
+    "inlineSources": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "types": [],
+    "lib": ["dom", "es2019"]
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "skipTemplateCodegen": true,
+    "skipMetadataEmit": true
+  },
+  "exclude": ["src/tests/*.ts", "src/**/*.spec.ts"]
+}

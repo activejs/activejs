@@ -1,0 +1,209 @@
+@import '../../../styles/variables';
+
+.dark-mode {
+  ajs-playground {
+    .frozen-unit-area {
+      background-color: lighten($nightBg, 10%);
+    }
+
+    .table-container {
+      table th,
+      table td {
+        border-color: $nightShade;
+      }
+
+      .value-td-inner {
+        code {
+          background-color: $nightShade;
+        }
+      }
+    }
+  }
+}
+
+ajs-playground {
+  fieldset {
+    margin: (3 * $gutter-base) auto;
+
+    label {
+      @at-root {
+        playground-async-system#{&} {
+          flex-basis: 0;
+          min-width: 230px;
+        }
+      }
+      input {
+        max-width: 125px;
+      }
+    }
+  }
+
+  .table-container {
+    margin: auto;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+
+    table {
+      margin: auto;
+      min-width: 1023px;
+      width: 100%;
+      height: 1px;
+      border-collapse: collapse;
+
+      th,
+      td {
+        &:first-child {
+          width: 170px;
+        }
+
+        border: 3px solid $dayShade;
+        height: 3em;
+      }
+
+      th {
+        padding: 12px;
+      }
+
+      td {
+        padding: 0;
+      }
+    }
+
+    .method-options,
+    .methods {
+      td {
+        padding: 10px 0;
+      }
+    }
+
+    .methods {
+      td {
+        .methods-container {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+
+          > * {
+            flex-grow: 1;
+            flex-basis: 34%;
+          }
+
+          > button {
+            align-self: stretch;
+            margin-bottom: 0 !important;
+          }
+        }
+      }
+    }
+
+    .dispatch-inputs > td > div {
+      input:not([type='checkbox']) {
+        width: calc(100% - 12px);
+        min-width: 50px;
+      }
+    }
+
+    .cache-info {
+      margin: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .current-values td {
+      .value-td-inner code {
+        border-color: $success-color;
+      }
+    }
+
+    .value-td-inner {
+      //height: 100%;
+      padding: 8px;
+
+      &.fade-in {
+        code {
+          animation: 2s fadeIn;
+        }
+      }
+
+      &:not(.fade-in) {
+        // this clears the animation on class removal
+        code {
+          animation: none;
+        }
+      }
+
+      &.active {
+        code {
+          border-color: $primary-color;
+
+          &::before {
+            content: '\25B6';
+            color: $primary-color;
+            position: absolute;
+            top: 50%;
+            left: 1px;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+          }
+        }
+      }
+
+      code {
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        padding: 12px 18px;
+        border: 1px solid transparent;
+        border-radius: $border-radius;
+        white-space: pre-wrap;
+        color: inherit;
+        background-color: $dayShade;
+      }
+    }
+  }
+
+  .standalone-unit {
+    table {
+      max-width: 515px; // keep at-most 2 methods on 1 line
+      min-width: 380px !important;
+
+      &.wider-table {
+        max-width: 875px; // keep at-most 2 methods on 1 line
+        min-width: 600px !important;
+      }
+
+      td:nth-child(2) {
+        width: 370px;
+      }
+    }
+  }
+
+  .frozen-unit-area {
+    background-color: lighten($dayBg, 5%);
+
+    .emoji,
+    button,
+    input,
+    .input {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .unblock {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

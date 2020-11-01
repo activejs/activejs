@@ -1,0 +1,161 @@
+@import '../../../styles/variables';
+
+.dark-mode {
+  ajs-home-page {
+    background-color: lighten($nightBg, 3%);
+
+    .btn {
+      box-shadow: 2px 2px 0 2px lighten($nightBg, 10%);
+    }
+
+    .group-section {
+      section {
+        &:nth-of-type(2n + 1) {
+          background-color: $nightBg;
+        }
+
+        &:nth-of-type(2n) {
+          background-color: darken($nightBg, 5%);
+        }
+      }
+    }
+
+    .main-section {
+      code {
+        color: lighten($primary-color, 20%);
+        background-color: darken($nightBg, 3%);
+      }
+    }
+  }
+}
+
+ajs-home-page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  > * {
+    flex-shrink: 0; // safari fix
+  }
+  padding: 4vmin;
+  background-color: lighten($dayBg, 3%);
+  text-align: center;
+
+  b {
+    font-weight: 400;
+  }
+
+  .group-section {
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 3rem 0;
+
+    section {
+      flex: 1;
+
+      &:nth-of-type(2n + 1) {
+        background-color: $dayBg;
+      }
+
+      &:nth-of-type(2n) {
+        background-color: darken($dayBg, 5%);
+      }
+
+      p {
+        font-size: 1.2rem;
+      }
+
+      .emoji {
+        display: block;
+        font-size: 2em;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 1000px) {
+        & {
+          flex-basis: 50%;
+        }
+      }
+
+      @media screen and (max-width: 640px) {
+        & {
+          flex-basis: 100%;
+        }
+      }
+    }
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+
+    > * {
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .main-section {
+    margin: auto;
+    flex-basis: auto;
+    width: 100%;
+    justify-content: center;
+    $brand-logo-size: 140px;
+
+    .brand-logo {
+      width: $brand-logo-size;
+      height: $brand-logo-size; // prevent content jump on load
+    }
+
+    .get-started-btn {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: $primary-color;
+      width: $brand-logo-size;
+      transition: 0.6s transform cubic-bezier(0, 0.63, 0.48, 1.15);
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    code {
+      background-color: #fff;
+      color: $primary-color;
+      font-weight: bold;
+      padding: $gutter-base;
+      border-radius: $border-radius;
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 2 * $brand-logo-size;
+      position: relative;
+
+      &.show-clipboard {
+        &:after {
+          visibility: visible;
+          opacity: 1;
+          transform: translate3d(0, -50%, 0) scale(1.2);
+        }
+      }
+
+      &:after {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        content: '📋';
+        font-size: 1.5em;
+        right: 10px;
+        top: 50%;
+        transform: translate3d(0, -50%, 0) scale(0);
+        transition: 0.3s transform, 0.5s opacity;
+      }
+    }
+  }
+}

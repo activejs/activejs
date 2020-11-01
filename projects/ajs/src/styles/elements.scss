@@ -1,0 +1,211 @@
+@import './variables';
+
+code,
+kbd {
+  color: #00b36f;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 2px 2px 5px 0 darken($dayBg, 10%);
+  border-radius: $border-radius;
+  min-width: 100px;
+  min-height: 2em;
+  padding: 6px 12px;
+  text-align: center;
+}
+
+.emoji {
+  font-family: $emojiFont;
+}
+
+.input {
+  --color-default: #626262;
+  --color-active: #{$primary-color};
+  --rotate-default: 180deg;
+  --rotate-active: 40deg;
+  --border-size-checkmark: 2px;
+  --border-size-box: 1px;
+  --input-size: 20px;
+  --gutter: 15px;
+
+  display: inline-flex;
+  position: relative;
+  margin: 6px;
+  white-space: nowrap;
+  user-select: none;
+
+  > input {
+    margin: 0 6px;
+  }
+
+  > input:not([type='checkbox']):not([type='radio']) {
+    min-width: 75px;
+  }
+
+  > input[type='checkbox'],
+  > input[type='radio'] {
+    //position: absolute;
+    width: var(--input-size);
+    clip-path: polygon(0 0);
+    margin: 0;
+  }
+
+  .input-label {
+    display: inline-block;
+    padding-left: 5px;
+    color: #424242;
+    vertical-align: text-top;
+    white-space: initial;
+  }
+
+  &.input-checkbox,
+  &.input-radio,
+  &.input-switcher {
+    height: var(--input-size);
+    cursor: pointer;
+
+    .input-label {
+      &::before,
+      &::after {
+        transition: all 0.2s ease-in-out;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        width: var(--input-size);
+        height: var(--input-size);
+        border: var(--border-size-box) solid var(--color-default);
+        position: absolute;
+        top: -3px;
+        left: 0;
+        transform: rotate(0deg) scale(1);
+      }
+
+      &:hover::before {
+        border-color: var(--color-active);
+      }
+    }
+  }
+
+  &.input-checkbox {
+    .input-label {
+      &::before {
+        border-radius: var(--border-size-checkmark);
+      }
+
+      &::after {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 18px;
+        border-width: 0 var(--border-size-checkmark) var(--border-size-checkmark) 0;
+        border-style: solid;
+        border-color: transparent var(--color-active) var(--color-active) transparent;
+        position: absolute;
+        top: -3px;
+        left: 0;
+        transform: rotate(var(--rotate-default)) scale(0);
+      }
+    }
+
+    > input:checked + .input-label {
+      &::before {
+        transform: rotate(var(--rotate-active)) scale(0);
+      }
+
+      &::after {
+        left: 8px;
+        transform: rotate(var(--rotate-active)) scale(1);
+      }
+    }
+  }
+
+  &.input-radio {
+    .input-label {
+      &::before,
+      &::after {
+        border-radius: 100%;
+        top: -2px;
+      }
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 12px;
+        height: 0;
+        top: 100%;
+        left: 4px;
+      }
+    }
+
+    > input:checked + .input-label {
+      &::before {
+        background-color: var(--color-active);
+      }
+
+      &::after {
+        background-color: #fff;
+        height: 12px;
+        top: 2px;
+      }
+    }
+  }
+
+  &.input-switcher {
+    .input-label {
+      padding-left: 28px;
+
+      &::before {
+        content: '';
+        width: 36px;
+        height: 20px;
+        border-radius: 20px;
+        top: -2px;
+      }
+
+      &::after {
+        content: '';
+        border-radius: 4px;
+        width: 6px;
+        height: 12px;
+        background-color: var(--color-default);
+        position: absolute;
+        top: 3px;
+        left: 7px;
+      }
+    }
+
+    > input:checked + .input-label {
+      &::before {
+        background-color: var(--color-active);
+        border-color: var(--color-active);
+      }
+
+      &::after {
+        background-color: #fff;
+        left: 24px;
+      }
+    }
+  }
+}
+
+[disabled],
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+  cursor: not-allowed;
+}
+
+.dark-mode {
+  .btn {
+    color: $nightColor;
+    background-color: darken($nightBg, 4%);
+    box-shadow: 2px 2px 0 2px lighten($nightBg, 5%);
+  }
+}

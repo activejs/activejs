@@ -1,0 +1,34 @@
+# @active/core NPM publish workflow
+
+name: core-NPM-Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get latest release version
+        id: latest-release
+        run: |
+          VERSION=$(curl -s https://api.github.com/repos/activejs/activejs/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
+          echo ::set-output name=version::$VERSION
+
+      - name: Download release assets
+        run: |
+          curl -s -L https://github.com/activejs/activejs/releases/latest/download/${{ steps.latest-release.outputs.version }}.zip -o release-artifacts.zip
+          unzip -o -d release-artifacts release-artifacts.zip
+
+      - name: Publish
+        run: |
+          cd release-artifacts/core/
+          npm publish --access public --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

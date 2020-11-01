@@ -1,0 +1,52 @@
+@import '../../../styles/variables';
+
+.dark-mode {
+  ajs-playground-footer-notes {
+    div {
+      border-color: $nightShade;
+    }
+
+    ul li:nth-of-type(2n + 1) {
+      background-color: $nightShade;
+    }
+
+    code {
+      color: $success-color;
+    }
+  }
+}
+
+ajs-playground-footer-notes {
+  display: block;
+  margin: (4 * $gutter-base) auto auto;
+  max-width: 600px;
+
+  div {
+    border: 2px solid $dayShade;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+
+    li {
+      &:nth-of-type(2n + 1) {
+        background-color: $dayShade;
+      }
+
+      &:before {
+        content: '❯';
+        font-family: $emojiFont;
+        font-weight: bold;
+        cursor: default;
+        margin-right: 5px;
+        color: $danger-color;
+      }
+    }
+  }
+
+  code {
+    color: $extra-color;
+    font-size: 0.9em;
+  }
+}

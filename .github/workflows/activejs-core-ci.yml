@@ -1,0 +1,47 @@
+# @active/core CI workflow
+
+name: core-CI
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/core/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'packages/core/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - uses: actions/cache@v2
+        id: node-modules-cache
+        env:
+          cache-name: activejs-core-ci-node-modules-cache
+        with:
+          path: '**/node_modules'
+          key: node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint:core
+
+      - name: Build
+        run: npm run build:core
+
+      - name: Test
+        run: npm run test:core

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript">
+      var notFoundResource = location.pathname + location.search + location.hash;
+      var redirectUrl;
+
+      if (location.hostname === 'api.activejs.dev') {
+        redirectUrl = 'https://api.activejs.dev/?' + notFoundResource;
+      } else {
+        redirectUrl = 'https://activejs.dev/#/' + notFoundResource;
+      }
+
+      window.location.href = redirectUrl;
+      var anchor = document.querySelector('.redirect-link');
+      anchor.attributes.href = redirectUrl;
+    </script>
+    <title>ActiveJS 404 Redirect</title>
+  </head>
+  <body>
+    If you are not redirected automatically, follow
+    <a class="redirect-link" href="https://activejs.dev">this link</a>.
+  </body>
+</html>

@@ -1,0 +1,40 @@
+@import './variables';
+
+.dark-mode {
+  .sub-nav {
+    background: lighten($nightBg, 5%);
+  }
+}
+
+.sub-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: lighten($dayBg, 8%);
+  padding: 0.5rem;
+
+  > a {
+    color: inherit;
+    font-size: 1.1rem;
+    line-height: 2.5rem; // so that font-size animation doesn't jump
+    transition: font-size 0.3s, color 0.3s;
+
+    &:not(:last-child) {
+      margin-right: 24px;
+    }
+
+    &.active {
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+
+    &.active,
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}

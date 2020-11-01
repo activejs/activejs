@@ -1,0 +1,50 @@
+@import '../../../../styles/variables';
+
+.dark-mode {
+  ajs-typeahead-example {
+    input {
+      background-color: darken($nightBg, 3%);
+    }
+  }
+}
+
+ajs-typeahead-example {
+  label {
+    flex-grow: 1;
+  }
+  input {
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .search-results-container {
+    margin: $gutter-base auto;
+    max-width: 600px;
+
+    a {
+      display: block;
+      color: $primary-color;
+      padding: $gutter-base/2 $gutter-base;
+      font-weight: 500;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 1rem;
+    }
+
+    li {
+      background: rgba(0, 0, 0, 0.01);
+
+      &:hover {
+        box-shadow: inset 0 0 0 1px $primary-color;
+      }
+    }
+
+    li:nth-child(2n + 1) {
+      background-color: rgba(0, 0, 0, 0.09);
+    }
+  }
+}

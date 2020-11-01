@@ -1,0 +1,131 @@
+@import './variables';
+
+.accordion {
+  transition: 0.3s height cubic-bezier(0.8, 0, 0.4, 1);
+}
+
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.vertical-align-top {
+  vertical-align: top !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.m {
+  margin: $gutter-base !important;
+}
+
+.mx {
+  margin-left: $gutter-base !important;
+  margin-right: $gutter-base !important;
+}
+
+.my {
+  margin-top: $gutter-base !important;
+  margin-bottom: $gutter-base !important;
+}
+
+.mt {
+  margin-top: $gutter-base !important;
+}
+
+.mb {
+  margin-bottom: $gutter-base !important;
+}
+
+.ml {
+  margin-left: $gutter-base !important;
+}
+
+.mr {
+  margin-right: $gutter-base !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.p {
+  padding: $gutter-base / 2 !important;
+}
+
+.px {
+  padding-left: $gutter-base / 2 !important;
+  padding-right: $gutter-base / 2 !important;
+}
+
+.py {
+  padding-top: $gutter-base / 2 !important;
+  padding-bottom: $gutter-base / 2 !important;
+}
+
+.pt {
+  padding-top: $gutter-base / 2 !important;
+}
+
+.pb {
+  padding-bottom: $gutter-base / 2 !important;
+}
+
+.pl {
+  padding-left: $gutter-base / 2 !important;
+}
+
+.pr {
+  padding-right: $gutter-base / 2 !important;
+}

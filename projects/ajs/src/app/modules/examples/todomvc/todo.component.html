@@ -1,0 +1,140 @@
+<section class="badge-links">
+  <a
+    href="https://github.com/activejs/activejs/tree/master/projects/ajs/src/app/modules/examples/todomvc"
+    target="_blank"
+    rel="noopener"
+  >
+    &lt;/&gt; Source <span class="emoji">🔗</span>
+  </a>
+</section>
+
+<section class="todoapp">
+  <header class="header">
+    <h1>
+      todos
+    </h1>
+    <h3>Persistent & Cache-enabled</h3>
+    <input
+      class="new-todo"
+      placeholder="What needs to be done?"
+      autofocus=""
+      [(ngModel)]="newTodoText"
+      (keyup.enter)="addTodo()"
+    />
+  </header>
+
+  <section class="main" *ngIf="todoStore.todosUnit.length > 0">
+    <input
+      class="toggle-all"
+      type="checkbox"
+      *ngIf="todoStore.todosUnit.length"
+      [checked]="todoStore.allCompleted"
+    />
+    <label (click)="todoStore.setAllTo(!todoStore.allCompleted)"></label>
+
+    <ul class="todo-list">
+      <li
+        *ngFor="let todo of todoStore.todosUnit | async | todoFilter: showWithCompletionStatus"
+        [class.completed]="todo.completed"
+        [class.editing]="todo.id === editingTodoId"
+      >
+        <div class="view">
+          <input
+            class="toggle"
+            type="checkbox"
+            (click)="todoStore.toggleCompletion(todo.id)"
+            [checked]="todo.completed"
+          />
+          <label (dblclick)="startEditing(todo.id)">{{ todo.title }}</label>
+
+          <button class="destroy" (click)="todoStore.remove(todo.id)"></button>
+        </div>
+
+        <input
+          class="edit"
+          *ngIf="todo.id === editingTodoId"
+          [value]="todo.title"
+          #editedTodo
+          (blur)="stopEditing()"
+          (keyup.enter)="updateTodo(todo.id, editedTodo.value)"
+          (keyup.escape)="editedTodo.blur()"
+        />
+      </li>
+    </ul>
+  </section>
+
+  <footer class="footer" *ngIf="todoStore.todosUnit.length > 0">
+    <span class="todo-count">
+      <strong>{{ todoStore.remaining }}</strong>
+      {{ todoStore.remaining == 1 ? 'item' : 'items' }} left
+    </span>
+
+    <ul class="filters">
+      <li>
+        <a
+          href="#"
+          [class.selected]="showWithCompletionStatus == null"
+          (click)="$event.preventDefault(); showWithCompletionStatus = null"
+        >
+          All
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          [class.selected]="showWithCompletionStatus === true"
+          (click)="$event.preventDefault(); showWithCompletionStatus = true"
+        >
+          Completed
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          [class.selected]="showWithCompletionStatus === false"
+          (click)="$event.preventDefault(); showWithCompletionStatus = false"
+        >
+          Remaining
+        </a>
+      </li>
+    </ul>
+
+    <button
+      class="clear-completed"
+      *ngIf="todoStore.completed > 0"
+      (click)="todoStore.removeCompleted()"
+    >
+      Clear completed
+    </button>
+  </footer>
+</section>
+
+<section class="time-travel">
+  <button
+    class="btn mt color-primary mr"
+    [disabled]="!todoStore.todosUnit.cacheIndex"
+    (click)="todoStore.todosUnit.goBack()"
+  >
+    <b>↺</b> Undo
+  </button>
+
+  <button
+    class="btn mt color-primary mr"
+    [disabled]="todoStore.todosUnit.isEmpty"
+    (click)="todoStore.todosUnit.clearValue()"
+  >
+    Clear all
+  </button>
+
+  <button
+    class="btn mt color-primary"
+    [disabled]="todoStore.todosUnit.cacheIndex === todoStore.todosUnit.cachedValuesCount - 1"
+    (click)="todoStore.todosUnit.goForward()"
+  >
+    <b>↻</b> Redo
+  </button>
+</section>
+
+<footer>
+  <a href="http://todomvc.com/" target="_blank" rel="noopener">What is TodoMVC?</a>
+</footer>

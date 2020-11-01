@@ -1,0 +1,221 @@
+@import '../styles/variables';
+
+$small-screen: 719px;
+
+.dark-mode {
+  ajs-root {
+    > header {
+      background-color: darken($nightBg, 3%);
+    }
+
+    > footer {
+      background-color: darken($nightBg, 5%);
+    }
+
+    .badge-links {
+      > a {
+        background-color: lighten($nightBg, 2%);
+      }
+    }
+
+    @media screen and (max-width: $small-screen) {
+      .nav-links {
+        background-color: fade-out(darken($nightBg, 3%), 0.25);
+        box-shadow: 0 2px 5px darken($nightBg, 3%);
+      }
+    }
+  }
+}
+
+ajs-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  > * {
+    flex-shrink: 0; // safari fix
+  }
+
+  main {
+    margin: 0 $gutter-base 100px;
+  }
+
+  > header {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+
+    .header-content,
+    .nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .header-logo {
+      color: inherit;
+      margin-right: 3rem;
+
+      img {
+        height: 2.5rem;
+        margin-right: 16px;
+        vertical-align: middle;
+      }
+    }
+
+    .nav-links {
+      a {
+        color: inherit;
+        font-size: 1.1rem;
+        margin-right: 1.1em;
+        padding: 0.4em 0;
+
+        &.active {
+          color: $primary-color;
+          font-weight: 400;
+        }
+      }
+
+      &__backdrop {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 3.5rem; // header padding + logo height
+      }
+
+      .dark-mode-toggle {
+        display: none;
+      }
+    }
+
+    .dark-mode-toggle {
+      color: inherit;
+      margin-left: auto;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      margin-right: 0.8rem;
+      color: inherit;
+      font-size: 1.2rem;
+      width: 3rem;
+    }
+  }
+
+  > footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: darken($dayBg, 5%);
+    padding: 0 $gutter-base (3 * $gutter-base) $gutter-base;
+
+    a {
+      color: inherit;
+      margin: 8px 0;
+    }
+
+    .resources,
+    .community {
+      display: flex;
+      flex-direction: column;
+      margin: 0 (2 * $gutter-base);
+
+      h3 {
+        margin-bottom: $gutter-base;
+      }
+    }
+
+    .copyright-notice {
+      width: 100%;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .resources,
+    .community,
+    .copyright-notice {
+      margin-top: 3 * $gutter-base;
+    }
+  }
+
+  .badge-links {
+    text-align: center;
+
+    > a {
+      display: inline-block;
+      color: $primary-color;
+      font-size: 1.1rem;
+      padding: 10px;
+      background: lighten($dayBg, 4%);
+
+      &:not(:last-child) {
+        margin-right: $gutter-base;
+      }
+    }
+  }
+
+  @media screen and (max-width: $small-screen) {
+    &.sidebar-active {
+      overflow: hidden;
+
+      .nav-links {
+        &-container {
+          display: initial;
+        }
+
+        &__backdrop {
+          display: initial;
+        }
+      }
+    }
+
+    > header {
+      .nav-links {
+        &-container {
+          display: none;
+        }
+
+        display: flex;
+        position: fixed;
+        flex-direction: column;
+        background-color: fade-out(#fff, 0.5);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 5px darken($dayBg, 5%);
+        top: 3.5rem; // header padding + logo height
+        left: 0;
+        bottom: 0;
+        right: 0;
+        max-width: 300px;
+        padding: 1em;
+        z-index: 999;
+
+        a,
+        .dark-mode-toggle {
+          margin: 0;
+          padding: 1rem;
+          width: 100%;
+        }
+
+        .dark-mode-toggle {
+          display: block;
+          text-align: left;
+        }
+      }
+
+      .header-content > .dark-mode-toggle {
+        display: none;
+      }
+
+      .sidebar-toggle {
+        display: inline-block;
+      }
+    }
+  }
+}

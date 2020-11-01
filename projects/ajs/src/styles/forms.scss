@@ -1,0 +1,63 @@
+@import './variables';
+
+.dark-mode {
+  fieldset {
+    border-color: $nightShade;
+  }
+
+  .input {
+    --color-default: #{$nightColor};
+
+    input {
+      color: $nightColor;
+    }
+
+    .input-label {
+      color: $nightColor;
+    }
+  }
+
+  input {
+    box-shadow: 0 1px 0 $nightColor;
+  }
+}
+
+fieldset {
+  margin: $gutter-base auto;
+  border: 2px solid $dayShade;
+  padding: 20px;
+  max-width: 600px;
+
+  legend {
+    padding: 6px;
+    font-weight: bold;
+  }
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+
+  label {
+    margin: 10px;
+  }
+}
+
+.input {
+  input {
+    width: 100%;
+  }
+}
+
+input {
+  padding: 0 12px 4px 4px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  box-shadow: 0 1px 0 $dayColor;
+  transition: 0.3s box-shadow;
+
+  &:focus {
+    box-shadow: 0 3px 0 var(--color-active, $primary-color);
+  }
+}

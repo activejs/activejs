@@ -1,0 +1,26 @@
+{
+  "name": "@activejs/core",
+  "description": "Pragmatic, Reactive State Management for JavaScript Apps",
+  "version": "0.1.0",
+  "peerDependencies": {
+    "rxjs": "^6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/activejs/activejs.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/activejs/activejs/issues"
+  },
+  "homepage": "https://github.com/activejs/activejs",
+  "license": "MIT",
+  "author": "Ankit Singh <dabalyan@hotmail.com>",
+  "keywords": [
+    "ActiveJS",
+    "Reactive",
+    "RxJS",
+    "State",
+    "Store"
+  ]
+}

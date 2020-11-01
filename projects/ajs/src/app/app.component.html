@@ -1,0 +1,72 @@
+<header>
+  <div class="header-content">
+    <button class="sidebar-toggle" (click)="toggleSidebar()">
+      {{ sidebarActive ? '⛌' : '☰' }}
+    </button>
+
+    <a class="header-logo flex-centered-content" routerLink="/">
+      <img src="assets/logo-full.svg" alt="ActiveJS" />
+    </a>
+
+    <div class="nav-links-container">
+      <div class="nav-links__backdrop" (click)="toggleSidebar(false)"></div>
+
+      <div class="nav-links">
+        <a href="https://docs.activejs.dev" target="_blank" rel="noopener">
+          Docs
+        </a>
+        <a href="https://api.activejs.dev" target="_blank" rel="noopener">
+          API
+        </a>
+        <a
+          routerLink="/playground"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}"
+        >
+          Playground
+        </a>
+        <a
+          routerLink="/examples"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}"
+        >
+          Examples
+        </a>
+        <a href="https://github.com/activejs/activejs" target="_blank" rel="noopener">
+          GitHub
+        </a>
+
+        <button class="dark-mode-toggle" (click)="toggleDarkMode()">
+          <span class="emoji">{{ (darkModeUnit | async) ? '🔆' : '🌑' }}</span>
+          {{ (darkModeUnit | async) ? 'Light' : 'Dark' }} Mode
+        </button>
+      </div>
+    </div>
+
+    <button class="dark-mode-toggle" (click)="toggleDarkMode()">
+      <span class="emoji">{{ (darkModeUnit | async) ? '🔆' : '🌑' }}</span>
+      {{ (darkModeUnit | async) ? 'Light' : 'Dark' }} Mode
+    </button>
+  </div>
+</header>
+
+<router-outlet></router-outlet>
+
+<footer>
+  <div class="resources">
+    <h3>RESOURCES</h3>
+    <a href="https://docs.activejs.dev" target="_blank" rel="noopener">Documentation</a>
+    <a href="https://api.activejs.dev" target="_blank" rel="noopener">API Reference</a>
+    <a routerLink="/playground">Playground</a>
+  </div>
+
+  <div class="community">
+    <h3>COMMUNITY</h3>
+    <a href="https://github.com/activejs/activejs" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://stackoverflow.com/questions/tagged/activejs" target="_blank" rel="noopener"
+      >StackOverflow</a
+    >
+  </div>
+
+  <p class="copyright-notice">Copyright © 2020 Ankit Singh</p>
+</footer>

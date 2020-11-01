@@ -1,0 +1,33 @@
+<section class="badge-links">
+  <a
+    href="https://github.com/activejs/activejs/tree/master/projects/ajs/src/app/modules/examples/typeahead"
+    target="_blank"
+    rel="noopener"
+  >
+    &lt;/&gt; Source <span class="emoji">🔗</span>
+  </a>
+</section>
+
+<fieldset>
+  <legend>SEARCH WIKIPEDIA</legend>
+  <form>
+    <label class="input flex-1">
+      <input
+        type="text"
+        placeholder="e.g: Big Bang"
+        autofocus
+        [ngModelOptions]="{standalone: true}"
+        ngModel
+        (ngModelChange)="searchSystem.queryUnit.dispatch($event)"
+      />
+    </label>
+  </form>
+</fieldset>
+
+<div class="search-results-container" *ngIf="searchSystem.dataUnit | async as data">
+  <ul *ngIf="data.length">
+    <li *ngFor="let item of data">
+      <a [href]="item.url" [innerHTML]="item.snippet" target="_blank" rel="noopener"></a>
+    </li>
+  </ul>
+</div>

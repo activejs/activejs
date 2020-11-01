@@ -1,0 +1,60 @@
+@import './variables';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: $font;
+  font-weight: 300;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 320px;
+
+  background-color: $dayBg;
+  color: $dayColor;
+
+  &.dark-mode {
+    background-color: $nightBg;
+    color: $nightColor;
+  }
+}
+
+code,
+kbd {
+  font-family: $monoFont;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+button,
+[role='button'] {
+  cursor: pointer;
+}
+
+button {
+  background: transparent;
+  outline: none;
+  border: none;
+  user-select: none;
+  text-transform: capitalize;
+}

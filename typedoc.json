@@ -1,0 +1,16 @@
+{
+  "name": "ActiveJS",
+  "out": "docs",
+  "mode": "file",
+  "readme": "none",
+  "theme": "typedoc-themes/default",
+  "excludeExternals": true,
+  "stripInternal": true,
+  "excludePrivate": true,
+  "excludeNotExported": true,
+  "hideGenerator": true,
+  "includeDeclarations": true,
+  "tsconfig": "./tsconfig.json",
+  "plugin": ["none"],
+  "exclude": ["**/*+(index|spec|e2e|test|tests|checks)**"]
+}

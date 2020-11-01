@@ -1,0 +1,420 @@
+<section class="badge-links">
+  <a
+    href="https://docs.activejs.dev/fundamentals/units/{{unitType | lowercase}}"
+    target="_blank"
+    rel="noopener"
+  >
+    Docs <span class="emoji">🔗</span>
+  </a>
+  <a
+    href="https://api.activejs.dev/classes/{{unitType | lowercase}}.html"
+    target="_blank"
+    rel="noopener"
+  >
+    API Reference <span class="emoji">🔗</span>
+  </a>
+</section>
+
+<fieldset>
+  <legend>CONFIGURATION</legend>
+  <form [formGroup]="configurationForm">
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="distinctDispatchCheck" />
+      <span class="input-label">Distinct Dispatch Check</span>
+    </label>
+
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="immutable" />
+      <span class="input-label">Immutable</span>
+    </label>
+
+    <div style="width: 100%"></div>
+
+    <label class="input">
+      <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+      <span class="input-label">Cache Size</span>
+      <input type="number" formControlName="cacheSize" [attr.name]="unitType + 'CacheSize'" />
+    </label>
+
+    <label class="input">
+      <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+      <span class="input-label">Initial Value</span>
+      <input formControlName="initialValue" [attr.name]="unitType + 'InitialValue'" />
+    </label>
+
+    <div style="width: 100%">
+      <p *ngIf="configurationForm.dirty" class="mt mr text-right">
+        don't forget to click configure
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn mt color-danger mr"
+      style="margin-left: auto"
+      tooltip="Resets the fields to the default configuration of {{unitType}}.
+Doesn't affect the current instance."
+      (click)="configureForm()"
+    >
+      Default
+    </button>
+    <button
+      class="btn mt color-primary"
+      (click)="configure()"
+      style="font-size: 1.2em"
+      tooltip="Creates a new instance of {{unitType}} with the given configuration."
+    >
+      (Re)Configure
+    </button>
+  </form>
+</fieldset>
+
+<div class="table-container my">
+  <table [class.wider-table]="unitType === 'DictUnit' || unitType === 'ListUnit'">
+    <thead>
+      <tr>
+        <th colspan="2">
+          <h3>
+            {{unitType}} Instance
+            <sub class="color-danger" *ngIf="unit.isFrozen">(frozen)</sub>
+          </h3>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr class="method-options">
+        <td class="text-center">
+          <span class="emoji" [tooltip]="methodOptionsHelp">ℹ</span> Dispatch Options
+        </td>
+
+        <td [class.frozen-unit-area]="unit.isFrozen">
+          <div class="flex flex-wrap ml mb">
+            <label class="input input-switcher mt mr">
+              <input type="checkbox" [(ngModel)]="dispatchOptions.cacheReplace" />
+              <span class="input-label">CacheReplace</span>
+            </label>
+            <label class="input input-switcher mt mr">
+              <input type="checkbox" [(ngModel)]="dispatchOptions.force" />
+              <span class="input-label">Force</span>
+            </label>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="dispatch-inputs methods">
+        <td class="text-center">Dispatch</td>
+
+        <td [class.frozen-unit-area]="unit.isFrozen">
+          <div class="ml mb methods-container">
+            <label
+              class="input input-switcher m-0 mt"
+              *ngIf="unitType === 'BoolUnit'"
+              style="flex-grow: 0"
+              [tooltip]="boolUnitInputValueHelp"
+            >
+              <input
+                type="checkbox"
+                #boolUnitValueCheckbox
+                (change)="unitValueInput.value = boolUnitValueCheckbox.checked.toString()"
+              />
+              <span class="input-label"></span>
+            </label>
+            <label class="input mt">
+              <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+              <input
+                [attr.disabled]="unit.isFrozen || null"
+                placeholder="value"
+                [attr.name]="unitType + 'Value'"
+                #unitValueInput
+                (keydown.enter)="unit.dispatch(eval(unitValueInput.value), dispatchOptions);"
+              />
+            </label>
+            <button
+              class="btn mr mt"
+              (click)="unit.dispatch(eval(unitValueInput.value), dispatchOptions);"
+            >
+              Dispatch
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="methods other-methods">
+        <td class="text-center">
+          Other Methods
+          <div>
+            <button class="btn m" (click)="collapseOtherMethods = !collapseOtherMethods">
+              Show {{collapseOtherMethods ? 'More' : 'Less'}}
+            </button>
+          </div>
+        </td>
+
+        <td [class.frozen-unit-area]="unit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="unit.replay()">
+                Replay
+              </button>
+              <button class="btn mt mr" (click)="unit.goBack();">Go Back</button>
+              <button class="btn mt mr" (click)="unit.goForward();">Go Forward</button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button
+                class="btn mt mr"
+                *ngIf="unitType === 'GenericUnit'"
+                (click)="unit.goBack(true)"
+              >
+                Back Non-Nil
+              </button>
+              <button
+                class="btn mt mr"
+                *ngIf="unitType === 'GenericUnit'"
+                (click)="unit.goForward(true)"
+              >
+                Forward Non-Nil
+              </button>
+              <button class="btn mt mr" (click)="unit.jumpToStart();">Jump to Start</button>
+              <button class="btn mt mr" (click)="unit.jumpToEnd();">Jump to End</button>
+              <button class="btn mt mr" (click)="unit.clearValue();">Clear Value</button>
+              <button class="btn mt mr" (click)="unit.resetValue();">Reset Value</button>
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="unit.clearCache();">
+                Clear Cache
+              </button>
+              <button
+                class="btn mt mr unblock"
+                style="flex-basis: 100%"
+                (click)="unit.isFrozen ? unit.unfreeze() : unit.freeze()"
+              >
+                {{unit.isFrozen ? 'Unfreeze' : 'Freeze'}}
+              </button>
+              <button class="btn mt mr unblock" (click)="unit.clear();">Clear</button>
+              <button class="btn mt mr unblock" (click)="unit.reset();">Reset</button>
+            </div>
+          </div>
+        </td>
+
+        <td *ngIf="unitType === 'DictUnit'" [class.frozen-unit-area]="unit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container flex-nowrap">
+              <div class="flex flex-wrap">
+                <label class="input mt">
+                  <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                  <input
+                    [attr.disabled]="unit.isFrozen || null"
+                    #addPropKeyInput
+                    placeholder="key"
+                    name="addPropKey"
+                    (keydown.enter)="unit.set(eval(addPropKeyInput.value), eval(addPropValueInput.value));"
+                  />
+                </label>
+                <label class="input mt">
+                  <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                  <input
+                    [attr.disabled]="unit.isFrozen || null"
+                    #addPropValueInput
+                    placeholder="value"
+                    name="addPropValue"
+                    (keydown.enter)="unit.set(eval(addPropKeyInput.value), eval(addPropValueInput.value));"
+                  />
+                </label>
+              </div>
+              <button
+                class="btn mr mt"
+                (click)="unit.set(eval(addPropKeyInput.value), eval(addPropValueInput.value));"
+              >
+                Add Prop
+              </button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <label class="input mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  [attr.disabled]="unit.isFrozen || null"
+                  #removePropKeyInput
+                  placeholder="key"
+                  name="removePropKey"
+                  (keydown.enter)="unit.delete(eval(removePropKeyInput.value));"
+                />
+              </label>
+              <button
+                class="btn mr mt"
+                name="removePropValue"
+                (click)="unit.delete(eval(removePropKeyInput.value));"
+              >
+                Remove Prop
+              </button>
+
+              <label class="input mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  [attr.disabled]="unit.isFrozen || null"
+                  #dictAssignInput
+                  placeholder="source"
+                  name="dictAssignSource"
+                  (keydown.enter)="unit.assign(eval(dictAssignInput.value));"
+                />
+              </label>
+              <button class="btn mr mt" (click)="unit.assign(eval(dictAssignInput.value));">
+                Assign
+              </button>
+            </div>
+          </div>
+        </td>
+
+        <td *ngIf="unitType === 'ListUnit'" [class.frozen-unit-area]="unit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <label class="input mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  [attr.disabled]="unit.isFrozen || null"
+                  #listPushInput
+                  placeholder="item"
+                  name="listPushItem"
+                  (keydown.enter)="unit.push(eval(listPushInput.value));"
+                />
+              </label>
+              <button class="btn mr mt" (click)="unit.push(eval(listPushInput.value));">
+                Push
+              </button>
+
+              <label class="input mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  [attr.disabled]="unit.isFrozen || null"
+                  #listUnshiftInput
+                  placeholder="item"
+                  name="listUnshiftItem"
+                  (keydown.enter)="unit.unshift(eval(listUnshiftInput.value));"
+                />
+              </label>
+              <button class="btn mr mt" (click)="unit.unshift(eval(listUnshiftInput.value));">
+                Unshift
+              </button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button class="btn mr mt" (click)="unit.shift();">Shift</button>
+              <button class="btn mr mt" (click)="unit.pop();">Pop</button>
+
+              <div class="flex flex-wrap">
+                <label class="input mt">
+                  <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                  <input
+                    [attr.disabled]="unit.isFrozen || null"
+                    #addItemAtIndexInput
+                    placeholder="index"
+                    type="number"
+                    name="addItemAtIndex"
+                    (keydown.enter)="unit.set(eval(addItemAtIndexInput.value), eval(updateItemValueInput.value));"
+                  />
+                </label>
+                <label class="input mt">
+                  <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                  <input
+                    [attr.disabled]="unit.isFrozen || null"
+                    #updateItemValueInput
+                    placeholder="item"
+                    name="addItemAtValue"
+                    (keydown.enter)="unit.set(eval(addItemAtIndexInput.value), eval(updateItemValueInput.value));"
+                  />
+                </label>
+              </div>
+              <button
+                class="btn mr mt"
+                (click)="unit.set(eval(addItemAtIndexInput.value), eval(updateItemValueInput.value));"
+              >
+                Add/Update Item
+              </button>
+
+              <label class="input mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  [attr.disabled]="unit.isFrozen || null"
+                  #removeItemAtIndexInput
+                  placeholder="index"
+                  type="number"
+                  name="removeItemAtIndex"
+                  (keydown.enter)="unit.remove(eval(removeItemAtIndexInput.value));"
+                />
+              </label>
+              <button class="btn mr mt" (click)="unit.remove(eval(removeItemAtIndexInput.value));">
+                Remove Item
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="emit-count">
+        <td class="text-center">Emit Count</td>
+
+        <th><p>{{unit.emitCount}}</p></th>
+      </tr>
+
+      <tr class="cached-values">
+        <td class="text-center">Cache</td>
+
+        <td class="p">
+          <p class="cache-info">
+            <span>Size: {{unit.cacheSize}}</span> <b> &bull; </b>
+            <span>Count: {{unit.cachedValuesCount}}</span> <b> &bull; </b>
+            <span>Index: {{unit.cacheIndex}}</span>
+          </p>
+
+          <div
+            *ngFor="let noUse of cacheIterator; let i = index"
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="unit.cacheIndex === i && unit.emitCount"
+            [class.active]="unit.cacheIndex === i"
+            [style.padding-top]="i !== 0 ? 0 : null"
+          >
+            <code>{{unitCachedValues[i] | safeJson}} &nbsp;</code>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="current-values">
+        <td class="text-center color-success"><h3>Value</h3></td>
+
+        <td class="p">
+          <div class="value-td-inner" ajsRunClass="fade-in" [ajsRunClassOnChange]="unit.emitCount">
+            <code>{{unit | async | safeJson}}</code>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="latest-event">
+        <td class="text-center">
+          <p class="mt">Latest Event</p>
+          <div>
+            <button class="btn m" (click)="collapseEventDetails = !collapseEventDetails">
+              {{ collapseEventDetails ? 'Show': 'Hide' }} Details
+            </button>
+          </div>
+        </td>
+
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="unit.events$ | async"
+          >
+            <code *ngIf="unit.events$ | async as latestEvent">
+              <b>{{latestEvent.constructor.name}}</b><br /><!--
+              --><span class="block" [ajsAccordion]="collapseEventDetails"
+                >{{latestEvent | filterOptions | safeJson}}</span
+              >
+            </code>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ajs-playground-footer-notes></ajs-playground-footer-notes>

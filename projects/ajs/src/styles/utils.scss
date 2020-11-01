@@ -1,0 +1,41 @@
+@import './variables';
+
+.white-space-nowrap {
+  white-space: nowrap !important;
+}
+
+.color-primary {
+  color: $primary-color !important;
+  --color-active: #{$primary-color};
+}
+
+.color-extra {
+  color: $extra-color !important;
+  --color-active: #{$extra-color};
+}
+
+.color-success {
+  color: $success-color !important;
+  --color-active: #{$success-color};
+}
+
+.color-danger {
+  color: $danger-color !important;
+  --color-active: #{$danger-color};
+}
+
+.bg-primary {
+  background-color: $primary-color !important;
+}
+
+.bg-extra {
+  background-color: $extra-color !important;
+}
+
+.bg-success {
+  background-color: darken($success-color, 10%) !important;
+}
+
+.bg-danger {
+  background-color: $danger-color !important;
+}

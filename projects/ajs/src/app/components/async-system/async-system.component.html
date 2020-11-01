@@ -1,0 +1,710 @@
+<section class="badge-links">
+  <a
+    href="https://docs.activejs.dev/fundamentals/systems/asyncsystem"
+    target="_blank"
+    rel="noopener"
+  >
+    Docs <span class="emoji">🔗</span>
+  </a>
+  <a href="https://api.activejs.dev/classes/asyncsystem.html" target="_blank" rel="noopener">
+    API Reference <span class="emoji">🔗</span>
+  </a>
+</section>
+
+<fieldset>
+  <legend>CONFIGURATION</legend>
+  <form [formGroup]="configurationForm">
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="clearErrorOnData" />
+      <span class="input-label"
+        >Clear <span class="color-danger">Error</span> On
+        <span class="color-success">Data</span></span
+      >
+    </label>
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="clearErrorOnQuery" />
+      <span class="input-label"
+        >Clear <span class="color-danger">Error</span> On
+        <span class="color-primary">Query</span></span
+      >
+    </label>
+
+    <div style="width: 100%"></div>
+
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="clearDataOnError" />
+      <span class="input-label"
+        >Clear <span class="color-success">Data</span> On
+        <span class="color-danger">Error</span></span
+      >
+    </label>
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="clearDataOnQuery" />
+      <span class="input-label"
+        >Clear <span class="color-success">Data</span> On
+        <span class="color-primary">Query</span></span
+      >
+    </label>
+
+    <div style="width: 100%"></div>
+
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="autoUpdatePendingValue" />
+      <span class="input-label">Auto Update <span class="color-extra">Pending</span> Unit</span>
+    </label>
+    <label class="input input-switcher mr">
+      <input type="checkbox" formControlName="freezeQueryWhilePending" />
+      <span class="input-label"
+        >Freeze <span class="color-primary">Query</span> While
+        <span class="color-extra">Pending</span></span
+      >
+    </label>
+
+    <div style="width: 100%">
+      <p *ngIf="configurationForm.dirty" class="mt mr text-right">
+        don't forget to click configure
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn mt color-danger mr"
+      style="margin-left: auto"
+      tooltip="Resets the fields to the default configuration of an AsyncSystem.
+Doesn't affect the current instance."
+      (click)="configureForm()"
+    >
+      Default
+    </button>
+    <button
+      class="btn mt color-primary"
+      (click)="configure()"
+      style="font-size: 1.2em"
+      tooltip="Creates a new instance of AsyncSystem with the given configuration."
+    >
+      (Re)Configure
+    </button>
+  </form>
+</fieldset>
+
+<div class="table-container my">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <span
+            class="emoji"
+            tooltip="Instances of Units that belong to the current instance of AsyncSystem"
+            >ℹ</span
+          >
+          Unit
+        </th>
+        <th>
+          <h2 class="color-primary">
+            Query
+            <sub class="color-danger" *ngIf="queryUnit.isFrozen">(frozen)</sub>
+          </h2>
+        </th>
+        <th>
+          <h2 class="color-success">
+            Data
+            <sub class="color-danger" *ngIf="dataUnit.isFrozen">(frozen)</sub>
+          </h2>
+        </th>
+        <th>
+          <h2 class="color-danger">
+            Error
+            <sub class="color-danger" *ngIf="errorUnit.isFrozen">(frozen)</sub>
+          </h2>
+        </th>
+        <th>
+          <h2 class="color-extra">
+            Pending
+            <sub class="color-danger" *ngIf="pendingUnit.isFrozen">(frozen)</sub>
+          </h2>
+        </th>
+      </tr>
+      <tr>
+        <th>Unit Type</th>
+        <th>GenericUnit</th>
+        <th>GenericUnit</th>
+        <th>GenericUnit</th>
+        <th>BoolUnit</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr class="method-options">
+        <td class="text-center">
+          <span class="emoji" [tooltip]="methodOptionsHelp">ℹ</span> Dispatch Options
+        </td>
+        <td
+          colspan="4"
+          [class.frozen-unit-area]="
+            queryUnit.isFrozen && dataUnit.isFrozen && errorUnit.isFrozen && pendingUnit.isFrozen
+          "
+        >
+          <div class="flex flex-wrap justify-content-center m">
+            <label class="input input-switcher mr">
+              <input type="checkbox" [(ngModel)]="dispatchOptions.cacheReplace" />
+              <span class="input-label">CacheReplace</span>
+            </label>
+            <label class="input input-switcher mr">
+              <input type="checkbox" [(ngModel)]="dispatchOptions.force" />
+              <span class="input-label">Force</span>
+            </label>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="dispatch-inputs methods">
+        <td class="text-center">Dispatch</td>
+        <td [class.frozen-unit-area]="queryUnit.isFrozen">
+          <div class="ml mb methods-container">
+            <label class="input color-primary mr mt">
+              <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+              <input
+                placeholder="value"
+                name="queryValue"
+                #queryValueInput
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (keydown.enter)="queryUnit.dispatch(eval(queryValueInput.value), dispatchOptions)"
+              />
+            </label>
+            <button
+              class="btn mr mt color-primary"
+              [attr.disabled]="queryUnit.isFrozen || null"
+              (click)="queryUnit.dispatch(eval(queryValueInput.value), dispatchOptions)"
+            >
+              Dispatch
+            </button>
+          </div>
+        </td>
+        <td [class.frozen-unit-area]="dataUnit.isFrozen">
+          <div class="ml mb methods-container">
+            <label class="input color-success mr mt">
+              <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+              <input
+                placeholder="value"
+                name="dataValue"
+                #dataValueInput
+                (keydown.enter)="dataUnit.dispatch(eval(dataValueInput.value), dispatchOptions)"
+              />
+            </label>
+            <button
+              class="btn mr mt color-success"
+              (click)="dataUnit.dispatch(eval(dataValueInput.value), dispatchOptions)"
+            >
+              Dispatch
+            </button>
+          </div>
+        </td>
+        <td [class.frozen-unit-area]="errorUnit.isFrozen">
+          <div class="ml mb methods-container">
+            <label class="input color-danger mr mt">
+              <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+              <input
+                placeholder="value"
+                name="errorValue"
+                #errorValueInput
+                (keydown.enter)="errorUnit.dispatch(eval(errorValueInput.value), dispatchOptions)"
+              />
+            </label>
+            <button
+              class="btn mr mt color-danger"
+              (click)="errorUnit.dispatch(eval(errorValueInput.value), dispatchOptions)"
+            >
+              Dispatch
+            </button>
+          </div>
+        </td>
+        <td [class.frozen-unit-area]="pendingUnit.isFrozen">
+          <div class="ml mb methods-container">
+            <div class="flex">
+              <label
+                class="input input-switcher color-extra m-0 mt"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                style="flex-grow: 0"
+                [tooltip]="boolUnitInputValueHelp"
+              >
+                <input
+                  type="checkbox"
+                  #pendingValueCheckbox
+                  (change)="pendingValueInput.value = pendingValueCheckbox.checked.toString()"
+                />
+                <span class="input-label"></span>
+              </label>
+              <label class="input color-extra mr mt">
+                <span class="emoji" [tooltip]="genericEvalInputHelp">ℹ</span>
+                <input
+                  placeholder="value"
+                  name="pendingValue"
+                  #pendingValueInput
+                  [attr.disabled]="pendingUnit.isFrozen || null"
+                  (keydown.enter)="
+                    pendingUnit.dispatch(eval(pendingValueInput.value), dispatchOptions)
+                  "
+                />
+              </label>
+            </div>
+            <button
+              class="btn mr mt color-extra"
+              [attr.disabled]="pendingUnit.isFrozen || null"
+              (click)="pendingUnit.dispatch(eval(pendingValueInput.value), dispatchOptions)"
+            >
+              Dispatch
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="methods">
+        <td class="text-center">
+          Other Methods
+          <div>
+            <button class="btn m" (click)="collapseOtherMethods = !collapseOtherMethods">
+              Show {{ collapseOtherMethods ? 'More' : 'Less' }}
+            </button>
+          </div>
+        </td>
+
+        <td [class.frozen-unit-area]="queryUnit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                style="flex-basis: 100%"
+                (click)="queryUnit.replay()"
+              >
+                Replay
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.goBack()"
+              >
+                Go Back
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.goForward()"
+              >
+                Go Forward
+              </button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.jumpToStart()"
+              >
+                Jump to Start
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.jumpToEnd()"
+              >
+                Jump to End
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.clearValue()"
+              >
+                Clear Value
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.resetValue()"
+              >
+                Reset Value
+              </button>
+              <button
+                class="btn mt mr"
+                style="flex-basis: 100%"
+                [attr.disabled]="queryUnit.isFrozen || null"
+                (click)="queryUnit.clearCache()"
+              >
+                Clear Cache
+              </button>
+              <button
+                class="btn mt mr unblock"
+                style="flex-basis: 100%"
+                (click)="queryUnit.isFrozen ? queryUnit.unfreeze() : queryUnit.freeze()"
+              >
+                {{ queryUnit.isFrozen ? 'Unfreeze' : 'Freeze' }}
+              </button>
+              <button class="btn mt mr unblock" (click)="queryUnit.clear()">Clear</button>
+              <button class="btn mt mr unblock" (click)="queryUnit.reset()">Reset</button>
+            </div>
+          </div>
+        </td>
+
+        <td [class.frozen-unit-area]="dataUnit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="dataUnit.replay()">
+                Replay
+              </button>
+              <button class="btn mt mr" (click)="dataUnit.goBack()">Go Back</button>
+              <button class="btn mt mr" (click)="dataUnit.goForward()">Go Forward</button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button class="btn mt mr" (click)="dataUnit.jumpToStart()">Jump to Start</button>
+              <button class="btn mt mr" (click)="dataUnit.jumpToEnd()">Jump to End</button>
+              <button class="btn mt mr" (click)="dataUnit.clearValue()">Clear Value</button>
+              <button class="btn mt mr" (click)="dataUnit.resetValue()">Reset Value</button>
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="dataUnit.clearCache()">
+                Clear Cache
+              </button>
+              <button
+                class="btn mt mr unblock"
+                style="flex-basis: 100%"
+                (click)="dataUnit.isFrozen ? dataUnit.unfreeze() : dataUnit.freeze()"
+              >
+                {{ dataUnit.isFrozen ? 'Unfreeze' : 'Freeze' }}
+              </button>
+              <button class="btn mt mr unblock" (click)="dataUnit.clear()">Clear</button>
+              <button class="btn mt mr unblock" (click)="dataUnit.reset()">Reset</button>
+            </div>
+          </div>
+        </td>
+
+        <td [class.frozen-unit-area]="errorUnit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="errorUnit.replay()">
+                Replay
+              </button>
+              <button class="btn mt mr" (click)="errorUnit.goBack()">Go Back</button>
+              <button class="btn mt mr" (click)="errorUnit.goForward()">Go Forward</button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button class="btn mt mr" (click)="errorUnit.jumpToStart()">Jump to Start</button>
+              <button class="btn mt mr" (click)="errorUnit.jumpToEnd()">Jump to End</button>
+              <button class="btn mt mr" (click)="errorUnit.clearValue()">Clear Value</button>
+              <button class="btn mt mr" (click)="errorUnit.resetValue()">Reset Value</button>
+              <button class="btn mt mr" style="flex-basis: 100%" (click)="errorUnit.clearCache()">
+                Clear Cache
+              </button>
+              <button
+                class="btn mt mr unblock"
+                style="flex-basis: 100%"
+                (click)="errorUnit.isFrozen ? errorUnit.unfreeze() : errorUnit.freeze()"
+              >
+                {{ errorUnit.isFrozen ? 'Unfreeze' : 'Freeze' }}
+              </button>
+              <button class="btn mt mr unblock" (click)="errorUnit.clear()">Clear</button>
+              <button class="btn mt mr unblock" (click)="errorUnit.reset()">Reset</button>
+            </div>
+          </div>
+        </td>
+
+        <td [class.frozen-unit-area]="pendingUnit.isFrozen">
+          <div class="ml mb">
+            <div class="methods-container">
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                style="flex-basis: 100%"
+                (click)="pendingUnit.replay()"
+              >
+                Replay
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.goBack()"
+              >
+                Go Back
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.goForward()"
+              >
+                Go Forward
+              </button>
+            </div>
+
+            <div class="methods-container" [ajsAccordion]="collapseOtherMethods">
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.jumpToStart()"
+              >
+                Jump to Start
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.jumpToEnd()"
+              >
+                Jump to End
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.clearValue()"
+              >
+                Clear Value
+              </button>
+              <button
+                class="btn mt mr"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.resetValue()"
+              >
+                Reset Value
+              </button>
+              <button
+                class="btn mt mr"
+                style="flex-basis: 100%"
+                [attr.disabled]="pendingUnit.isFrozen || null"
+                (click)="pendingUnit.clearCache()"
+              >
+                Clear Cache
+              </button>
+              <button
+                class="btn mt mr unblock"
+                style="flex-basis: 100%"
+                (click)="pendingUnit.isFrozen ? pendingUnit.unfreeze() : pendingUnit.freeze()"
+              >
+                {{ pendingUnit.isFrozen ? 'Unfreeze' : 'Freeze' }}
+              </button>
+              <button class="btn mt mr unblock" (click)="pendingUnit.clear()">Clear</button>
+              <button class="btn mt mr unblock" (click)="pendingUnit.reset()">Reset</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="emit-count">
+        <td class="text-center">Emit Count</td>
+        <td class="text-center">
+          <p>{{ queryUnit.emitCount }}</p>
+        </td>
+        <td class="text-center">
+          <p>{{ dataUnit.emitCount }}</p>
+        </td>
+        <td class="text-center">
+          <p>{{ errorUnit.emitCount }}</p>
+        </td>
+        <td class="text-center">
+          <p>{{ pendingUnit.emitCount }}</p>
+        </td>
+      </tr>
+
+      <tr class="cached-values">
+        <td class="text-center">Cache</td>
+
+        <td class="vertical-align-top p">
+          <p class="cache-info">
+            <span>Size: {{ queryUnit.cacheSize }}</span> <b> &bull; </b>
+            <span>Count: {{ queryUnit.cachedValuesCount }}</span> <b> &bull; </b>
+            <span>Index: {{ queryUnit.cacheIndex }}</span>
+          </p>
+
+          <ng-container *ngFor="let noUse of cacheIterator; let i = index">
+            <div
+              class="value-td-inner"
+              *ngIf="queryCachedValues.length > i"
+              ajsRunClass="fade-in"
+              [ajsRunClassOnChange]="queryUnit.cacheIndex === i && queryUnit.emitCount"
+              [class.active]="queryUnit.cacheIndex === i"
+              [style.padding-top]="i !== 0 ? 0 : null"
+            >
+              <code>{{ queryCachedValues[i] | safeJson }} &nbsp;</code>
+            </div>
+          </ng-container>
+        </td>
+
+        <td class="vertical-align-top p">
+          <p class="cache-info">
+            <span>Size: {{ dataUnit.cacheSize }}</span> <b> &bull; </b>
+            <span>Count: {{ dataUnit.cachedValuesCount }}</span> <b> &bull; </b>
+            <span>Index: {{ dataUnit.cacheIndex }}</span>
+          </p>
+
+          <ng-container *ngFor="let noUse of cacheIterator; let i = index">
+            <div
+              class="value-td-inner"
+              *ngIf="dataCachedValues.length > i"
+              ajsRunClass="fade-in"
+              [ajsRunClassOnChange]="dataUnit.cacheIndex === i && dataUnit.emitCount"
+              [class.active]="dataUnit.cacheIndex === i"
+              [style.padding-top]="i !== 0 ? 0 : null"
+            >
+              <code>{{ dataCachedValues[i] | safeJson }} &nbsp;</code>
+            </div>
+          </ng-container>
+        </td>
+
+        <td class="vertical-align-top p">
+          <p class="cache-info">
+            <span>Size: {{ errorUnit.cacheSize }}</span> <b> &bull; </b>
+            <span>Count: {{ errorUnit.cachedValuesCount }}</span> <b> &bull; </b>
+            <span>Index: {{ errorUnit.cacheIndex }}</span>
+          </p>
+
+          <ng-container *ngFor="let noUse of cacheIterator; let i = index">
+            <div
+              class="value-td-inner"
+              *ngIf="errorCachedValues.length > i"
+              ajsRunClass="fade-in"
+              [ajsRunClassOnChange]="errorUnit.cacheIndex === i && errorUnit.emitCount"
+              [class.active]="errorUnit.cacheIndex === i"
+              [style.padding-top]="i !== 0 ? 0 : null"
+            >
+              <code>{{ errorCachedValues[i] | safeJson }} &nbsp;</code>
+            </div>
+          </ng-container>
+        </td>
+
+        <td class="vertical-align-top p">
+          <p class="cache-info">
+            <span>Size: {{ pendingUnit.cacheSize }}</span> <b> &bull; </b>
+            <span>Count: {{ pendingUnit.cachedValuesCount }}</span> <b> &bull; </b>
+            <span>Index: {{ pendingUnit.cacheIndex }}</span>
+          </p>
+
+          <ng-container *ngFor="let noUse of cacheIterator; let i = index">
+            <div
+              class="value-td-inner"
+              *ngIf="pendingCachedValues.length > i"
+              ajsRunClass="fade-in"
+              [ajsRunClassOnChange]="pendingUnit.cacheIndex === i && pendingUnit.emitCount"
+              [class.active]="pendingUnit.cacheIndex === i"
+              [style.padding-top]="i !== 0 ? 0 : null"
+            >
+              <code>{{ pendingCachedValues[i] | safeJson }} &nbsp;</code>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+
+      <tr class="current-values">
+        <td class="text-center color-success"><h3>Value</h3></td>
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="queryUnit.emitCount"
+          >
+            <code>{{ queryUnit | async | safeJson }}</code>
+          </div>
+        </td>
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="dataUnit.emitCount"
+          >
+            <code>{{ dataUnit | async | safeJson }}</code>
+          </div>
+        </td>
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="errorUnit.emitCount"
+          >
+            <code>{{ errorUnit | async | safeJson }}</code>
+          </div>
+        </td>
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="pendingUnit.emitCount"
+          >
+            <code>{{ pendingUnit | async | safeJson }}</code>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="latest-event">
+        <td class="text-center">
+          <p class="mt">Latest Event</p>
+          <div>
+            <button class="btn m" (click)="collapseEventDetails = !collapseEventDetails">
+              {{ collapseEventDetails ? 'Show' : 'Hide' }} Details
+            </button>
+          </div>
+        </td>
+
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="queryUnit.events$ | async"
+          >
+            <code *ngIf="queryUnit.events$ | async as latestEvent">
+              <b>{{ latestEvent.constructor.name }}</b
+              ><br /><!--
+              --><span class="block" [ajsAccordion]="collapseEventDetails">{{
+                latestEvent | filterOptions | safeJson
+              }}</span>
+            </code>
+          </div>
+        </td>
+
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="dataUnit.events$ | async"
+          >
+            <code *ngIf="dataUnit.events$ | async as latestEvent">
+              <b>{{ latestEvent.constructor.name }}</b
+              ><br /><!--
+              --><span class="block" [ajsAccordion]="collapseEventDetails">{{
+                latestEvent | filterOptions | safeJson
+              }}</span>
+            </code>
+          </div>
+        </td>
+
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="errorUnit.events$ | async"
+          >
+            <code *ngIf="errorUnit.events$ | async as latestEvent">
+              <b>{{ latestEvent.constructor.name }}</b
+              ><br /><!--
+              --><span class="block" [ajsAccordion]="collapseEventDetails">{{
+                latestEvent | filterOptions | safeJson
+              }}</span>
+            </code>
+          </div>
+        </td>
+
+        <td class="p">
+          <div
+            class="value-td-inner"
+            ajsRunClass="fade-in"
+            [ajsRunClassOnChange]="pendingUnit.events$ | async"
+          >
+            <code *ngIf="pendingUnit.events$ | async as latestEvent">
+              <b>{{ latestEvent.constructor.name }}</b
+              ><br /><!--
+              --><span class="block" [ajsAccordion]="collapseEventDetails">{{
+                latestEvent | filterOptions | safeJson
+              }}</span>
+            </code>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ajs-playground-footer-notes></ajs-playground-footer-notes>

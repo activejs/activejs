@@ -33,6 +33,7 @@ ajs-root {
   flex-direction: column;
   > * {
     flex-shrink: 0; // safari fix
+    z-index: 0;
   }
 
   main {
@@ -40,6 +41,7 @@ ajs-root {
   }
 
   > header {
+    z-index: 1;
     padding: 0.5rem 1rem;
     background-color: #fff;
 

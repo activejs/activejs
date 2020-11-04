@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/activejs/activejs.git"
   },
+  "homepage": "https://activejs.dev",
   "license": "MIT",
   "author": "Ankit Singh <dabalyan@hotmail.com>",
   "scripts": {

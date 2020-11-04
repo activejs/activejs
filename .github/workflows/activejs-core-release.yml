@@ -39,7 +39,7 @@ jobs:
         run: echo ::set-output name=version::${GITHUB_REF#refs/tags/}
 
       - name: Make sure the tag matches the npm version
-        run: npm --no-git-tag-version version ${{ steps.version-tag.outputs.version }}
+        run: npm --no-git-tag-version --allow-same-version version ${{ steps.version-tag.outputs.version }}
 
       - name: Build Core and AJS Website
         run: npm run build

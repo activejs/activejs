@@ -22,9 +22,9 @@ import {
  * Learn more about Units [here](https://docs.activejs.dev/fundamentals/units). \
  * Learn more about DictUnit [here](https://docs.activejs.dev/fundamentals/units/dictunit).
  *
- * Just like every other ActiveJS Unit:
- * - DictUnit extends {@link UnitBase}
- * - Which further extends {@link Base} and `Observable`
+ * Just like every other Non-Primitive ActiveJS Unit:
+ * - DictUnit extends {@link NonPrimitiveUnitBase}
+ * - Which further extends {@link UnitBase}, {@link Base} and `Observable`
  *
  * @category 1. Units
  */

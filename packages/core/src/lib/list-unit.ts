@@ -46,9 +46,9 @@ export interface ListUnit<Item> extends Array<Item> {}
  * Learn more about Units [here](https://docs.activejs.dev/fundamentals/units). \
  * Learn more about ListUnit [here](https://docs.activejs.dev/fundamentals/units/listunit).
  *
- * Just like every other ActiveJS Unit:
- * - ListUnit extends {@link UnitBase}
- * - Which further extends {@link Base} and `Observable`
+ * Just like every other Non-Primitive ActiveJS Unit:
+ * - ListUnit extends {@link NonPrimitiveUnitBase}
+ * - Which further extends {@link UnitBase}, {@link Base} and `Observable`
  *
  * @category 1. Units
  */

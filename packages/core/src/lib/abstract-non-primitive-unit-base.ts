@@ -79,13 +79,14 @@ export abstract class NonPrimitiveUnitBase<
   // tslint:enable:max-line-length
   /**
    * Select a nested property at a certain path in the Unit's {@link value}.
+   * It doesn't fail even if a value in middle of the path is undefined.
    *
    * It can be used to create an Observable to listen to changes in a nested property
    * using {@link Selection.asObservable} method.
    *
-   * Other {@link Selection} methods like `set`, `has`, `get` can be helpful
-   * when the Unit is configured to be immutable, or in general when you need
-   * to update a nested property.
+   * It provides static value access through the {@link Selection.value} method.
+   * It can be helpful when the Unit is configured to be immutable,
+   * as you only clone the nested property instead of the whole value.
    *
    * @example
    * ```typescript
@@ -109,7 +110,7 @@ export abstract class NonPrimitiveUnitBase<
    * ```
    *
    * @param path Property keys and indexes of the path you want to select.
-   * @returns The an Observable of value at the selected property or path.
+   * @returns A {@link Selection} object of the selected property or path.
    */
   select(...path: (string | number)[]): Selection<any, this> {
     checkPath(path);

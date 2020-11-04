@@ -7,6 +7,24 @@ import {DictUnit} from './dict-unit';
 import {isDict} from '../utils/funcs';
 import {UnitConfig, ValueToUnitType} from '../models';
 
+/**
+ * @hidden
+ * @experimental Meaning, It can disappear in the next version.
+ *
+ * An experimental short-hand function for Unit creation.
+ * It automatically chooses an appropriate type of Unit depending on the
+ * provided `initialValue`.
+ *
+ * For a `boolean` value, {@link BoolUnit} will be selected. \
+ * For a `number` value, {@link NumUnit} will be selected. \
+ * For a `string` value, {@link StringUnit} will be selected. \
+ * For an `array` value, {@link ListUnit} will be selected. \
+ * For a simple `dictionary object`, a {@link DictUnit} will be selected. \
+ * For every other value, {@link GenericUnit} will be selected. \
+ *
+ * @param initialValue Initial value of the Unit.
+ * @param config The configuration for the automatically selected Unit.
+ */
 export function createUnit<T>(
   initialValue: T,
   config?: Exclude<UnitConfig<T>, 'initialValue'>

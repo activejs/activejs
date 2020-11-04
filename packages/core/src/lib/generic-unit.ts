@@ -12,9 +12,9 @@ import {KOf, UnitConfig} from '../models';
  * Learn more about Units [here](https://docs.activejs.dev/fundamentals/units). \
  * Learn more about GenericUnit [here](https://docs.activejs.dev/fundamentals/units/genericunit).
  *
- * Just like every other ActiveJS Unit:
- * - GenericUnit extends {@link UnitBase}
- * - Which further extends {@link Base} and `Observable`
+ * Just like every other Non-Primitive ActiveJS Unit:
+ * - GenericUnit extends {@link NonPrimitiveUnitBase}
+ * - Which further extends {@link UnitBase}, {@link Base} and `Observable`
  *
  * @category 1. Units
  */

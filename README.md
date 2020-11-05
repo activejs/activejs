@@ -26,9 +26,9 @@ npm i @activejs/core
 
 ### 📖 [Documentation](https://docs.activejs.dev)
 
-### 🤾 [Playground](https://activejs.dev/playground)
+### 🤾 [Playground](https://activejs.dev/#/playground)
 
-### 📑 [TodoMVC Example](https://activejs.dev/examples/todomvc)
+### 📑 [TodoMVC Example](https://activejs.dev/#/examples/todomvc)
 
 ### ⚡ Quick Example
 
@@ -83,4 +83,4 @@ improve the docs, or spread the word. We also welcome your suggestions and feedb
 
 ### 💻 Author
 
-[Ankit Singh](https://www.linkedin.com/in/dabalyan/)
+[Ankit Singh](https://twitter.com/AlionBalyan)

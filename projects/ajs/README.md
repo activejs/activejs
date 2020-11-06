@@ -1,3 +1,1 @@
-# Playground
-
-Visit [playground.activejs.dev](https://playground.activejs.dev) for the visual playground.
+### This is the source code for [https://activejs.dev](https://activejs.dev)

@@ -627,7 +627,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
    * @returns Nothing, unlike `Array.prototype.reverse`
    *
    * @triggers {@link EventListUnitReverse}
-   * @category Customised `Array.prototype.reverse`
+   * @category Customised Array.prototype
    */
   reverse(): any {
     if (this.isFrozen || this.isEmpty) {

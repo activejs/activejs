@@ -275,10 +275,10 @@ export abstract class UnitBase<T> extends Base<T> {
 
   /**
    * Given a value, this function determines whether it should be dispatched or not. \
-   * The dispatch is denied in following circumstances: \
-   * - If the Unit is frozen. {@link isFrozen} \
-   * - If {@link UnitConfig.distinctDispatchCheck} is set to `true`, and the new-value === current-value, \
-   * - If {@link UnitConfig.customDispatchCheck} returns a `falsy` value. \
+   * The dispatch is denied in following circumstances:
+   * - If the Unit is frozen. {@link isFrozen}
+   * - If {@link UnitConfig.distinctDispatchCheck} is set to `true`, and the new-value === current-value,
+   * - If {@link UnitConfig.customDispatchCheck} returns a `falsy` value.
    *
    * If the Unit is not frozen, you can bypass other dispatch-checks by passing param `force = true`.
    *
@@ -685,7 +685,7 @@ export abstract class UnitBase<T> extends Base<T> {
    * so that subscribers can be in sync again. \
    * However, other {@link events$} are lost, and they will only emit on the next event.
    *
-   * It only works is the Unit is muted. \
+   * It only works if the Unit is muted. \
    * Moreover, it works even if the Unit is frozen, \
    * but no value will be emitted because no values would have been dispatched while the Unit was frozen.
    *

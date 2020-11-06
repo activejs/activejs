@@ -123,7 +123,8 @@ ajs-root {
     }
 
     .resources,
-    .community {
+    .community,
+    .social {
       display: flex;
       flex-direction: column;
       margin: 0 (2 * $gutter-base);
@@ -142,6 +143,7 @@ ajs-root {
 
     .resources,
     .community,
+    .social,
     .copyright-notice {
       margin-top: 3 * $gutter-base;
     }

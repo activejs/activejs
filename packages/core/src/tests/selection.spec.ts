@@ -101,17 +101,6 @@ describe(
       expect(() => makeSelection(invalidPath)).toThrowError(expectedError);
     });
 
-    it('should throw for non-NonPrimitiveUnit', () => {
-      unit = randomUnit();
-
-      if (unit instanceof NonPrimitiveUnitBase) {
-        expect().nothing();
-      } else {
-        expect(() => new Selection(unit, [])).toThrowError();
-        expect(() => new Selection(unit, randPath)).toThrowError();
-      }
-    });
-
     it('should create Observable', () => {
       makeUnit();
       makeCase();

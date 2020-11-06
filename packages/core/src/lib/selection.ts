@@ -4,7 +4,6 @@ import {UnitBase} from './abstract-unit-base';
 import {KOf} from '../models';
 import {plucker} from '../utils/funcs';
 import {checkPath} from '../checks/common';
-import {NonPrimitiveUnitBase} from './abstract-non-primitive-unit-base';
 
 /**
  * Selection offers the ability to operate on nested properties in a Unit's value.
@@ -18,11 +17,6 @@ import {NonPrimitiveUnitBase} from './abstract-non-primitive-unit-base';
  */
 export class Selection<T, U extends UnitBase<any> = UnitBase<any>, K extends KOf<T> = KOf<T>> {
   constructor(private unit: U, private path: (string | number)[]) {
-    if (!(unit instanceof NonPrimitiveUnitBase)) {
-      throw new TypeError(
-        `Expected the unit to be one of ListUnit, DictUnit, GenericUnit, but got ${unit}`
-      );
-    }
     checkPath(path);
   }
 

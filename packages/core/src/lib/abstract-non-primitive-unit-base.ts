@@ -1,7 +1,6 @@
 import {UnitBase} from './abstract-unit-base';
 import {makeNonEnumerable} from '../utils/funcs';
 import {KOf, UnitConfig} from '../models';
-import {checkPath} from '../checks/common';
 import {Selection} from './selection';
 
 /**
@@ -111,9 +110,10 @@ export abstract class NonPrimitiveUnitBase<
    *
    * @param path Property keys and indexes of the path you want to select.
    * @returns A {@link Selection} object of the selected property or path.
+   *
+   * @category Common List/Dict/Generic Units
    */
   select(...path: (string | number)[]): Selection<any, this> {
-    checkPath(path);
     return new Selection(this, path);
   }
 }

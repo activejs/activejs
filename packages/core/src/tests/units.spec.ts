@@ -823,112 +823,18 @@ describe(
           expect(operatorSpy).not.toHaveBeenCalled();
         }
       });
-    });
 
-    describe('select and Selection Operators', () => {
-      beforeAll(() => {
-        Configuration.reset();
-      });
-
-      let randVal: any;
-      let randPath: (string | number)[];
-      let valueAtPath: any;
-
-      const makeUnit = (overrideConfig?: UnitConfig<any>) => {
-        const unitCtor = selectRandom([DictUnit, ListUnit, GenericUnit]);
-        unitConfig = {
-          ...somewhatValidConfig(configOptions.concat('immutable'), unitCtor),
-          ...overrideConfig,
-        };
-        unit = new unitCtor(unitConfig);
-        randPath = findRandomPath(unit.value());
-        if (!randPath.length) {
-          randPath = [randomNumOrStr()];
-        }
-      };
-
-      const makeCase = () => {
-        randVal = randomValidValue(unit, 4);
-        randPath = findRandomPath(randVal);
-        if (!randPath.length) {
-          randPath = [randomNumOrStr()];
-        }
-        valueAtPath = plucker(randVal, randPath);
-        unit.dispatch(randVal);
-      };
-
-      it('throw error for invalid path', () => {
-        makeUnit();
-        const invalidKey = selectRandom([
-          false,
-          undefined,
-          null,
-          [],
-          {},
-          () => {},
-          class A {},
-        ]) as string;
-        const invalidPath = [...randomNumsAndStrings(), invalidKey];
-        const expectedError = `Expected numbers and strings, but got ${invalidKey} of type ${typeof invalidKey}`;
-        // @ts-ignore
-        expect(() => unit.select()).toThrowError(`Expected at least one key`);
-        expect(() => unit.select(invalidKey)).toThrowError(expectedError);
-        expect(() => unit.select(...(invalidPath as [any]))).toThrowError(expectedError);
-      });
-
-      it('should return Selections', () => {
-        makeUnit();
-        makeCase();
-        const selection = unit.select(...(randPath as [any]));
-        expect(selection).toBeInstanceOf(Selection);
-      });
-
-      it('should create Observable', () => {
-        makeUnit();
-        makeCase();
-        const spy = createSpy();
-        const selection = unit.select(...(randPath as [any]));
-        const selection$ = selection.asObservable();
-        selection$.subscribe(spy);
-
-        expect(selection$).toBeInstanceOf(Observable);
-
-        if (unit.config.replay === false) {
-          expect(spy).not.toHaveBeenCalled();
+      it('should return Selection for NonPrimitive Units', () => {
+        if (unit instanceof NonPrimitiveUnitBase) {
+          let randPath = findRandomPath(unit.value());
+          if (!randPath.length) {
+            randPath = [randomNumOrStr()];
+          }
+          const selection = unit.select(...(randPath as [any]));
+          expect(selection).toBeInstanceOf(Selection);
         } else {
-          expect(spy).toHaveBeenCalledTimes(1);
+          expect((unit as any).select).toBe(undefined);
         }
-      });
-
-      it('should emit distinct values', () => {
-        makeUnit();
-        makeCase();
-        const selection = unit.select(...(randPath as [any]));
-        const selection$ = selection.asObservable();
-        const selectorEmitsPairs = [];
-        selection$.pipe(pairwise()).subscribe(pair => selectorEmitsPairs.push(pair));
-
-        unit.replay();
-        unit.dispatch(value => randomMutation(value));
-        unit.dispatch(value => randomMutation(value));
-        unit.dispatch(value => randomMutation(value));
-        unit.replay();
-        unit.dispatch(randomValidValue(unit));
-        unit.dispatch(value => randomMutation(value));
-        unit.dispatch(value => randomMutation(value));
-        unit.dispatch(value => randomMutation(value));
-
-        const allUnique = selectorEmitsPairs.every(([v1, v2]) => v1 !== v2);
-        expect(allUnique).toBe(true);
-      });
-
-      it('should return the selected property', () => {
-        makeUnit();
-        makeCase();
-        const selection = unit.select(...(randPath as [any]));
-        const selectedValue = plucker(unit.value(), randPath);
-
-        expect(selection.value()).toEqual(selectedValue);
       });
     });
   })

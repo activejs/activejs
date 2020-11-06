@@ -26,7 +26,7 @@ export const UNITS_CTORS_COUNT = UNITS_CTORS.length;
 
 export const ALL_CTORS = [...UNITS_CTORS, Action, AsyncSystem, Cluster];
 
-const RANDOM_VALUE_PRODUCERS: Array<(nestingLvl?: number) => any> = [
+export const RANDOM_VALUE_PRODUCERS: Array<(nestingLvl?: number) => any> = [
   () => randomBoolean(),
   () => randomString(),
   () => randomString(),

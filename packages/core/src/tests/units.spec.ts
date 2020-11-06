@@ -1,5 +1,5 @@
 import {Observable, Subscription} from 'rxjs';
-import {pairwise, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {
   DispatchFailReason,
   EventReplay,
@@ -24,18 +24,13 @@ import {Configuration} from '../lib/configuration';
 import {Selection} from '../lib/selection';
 import {UnitBase} from '../lib/abstract-unit-base';
 import {Base} from '../lib/abstract-base';
-import {DictUnit} from '../lib/dict-unit';
-import {GenericUnit} from '../lib/generic-unit';
-import {ListUnit} from '../lib/list-unit';
 import {
   findRandomPath,
   multipleOf,
   numberOrRandomValue,
   randomBoolean,
-  randomMutation,
   randomNumber,
   randomNumOrStr,
-  randomNumsAndStrings,
   randomString,
   randomUnit,
   randomUnitCtor,
@@ -47,7 +42,7 @@ import {
   times,
   unitsDefaultValue,
 } from './utils';
-import {isNumber, plucker} from '../utils/funcs';
+import {isNumber} from '../utils/funcs';
 import createSpy = jasmine.createSpy;
 
 const configOptions: Array<keyof UnitConfig<any>> = [

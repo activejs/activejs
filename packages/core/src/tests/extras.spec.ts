@@ -8,10 +8,21 @@ import {
   generateAsyncSystemIds,
   getLocationId,
   hashCode,
+  isDict,
   makeNonEnumerable,
+  plucker,
 } from '../utils/funcs';
-import {randomBoolean, randomString, randomValue, times} from './utils';
+import {RANDOM_VALUE_PRODUCERS, randomBoolean, randomString, randomValue, times} from './utils';
 import {Configuration} from '../lib/configuration';
+import {
+  BoolUnit,
+  createUnit,
+  DictUnit,
+  GenericUnit,
+  ListUnit,
+  NumUnit,
+  StringUnit,
+} from '@activejs/core';
 
 describe('Extras - Fulfilment', () => {
   beforeAll(() => {
@@ -108,5 +119,26 @@ describe('Extras - Fulfilment', () => {
     expect(deDuplicate(arr)).toEqual([...new set(arr)]);
 
     window.Set = set; // reinstate Set
+  });
+
+  it('should return same value, if path is not Array', () => {
+    RANDOM_VALUE_PRODUCERS.map(producer => producer(1)).forEach(val => {
+      expect(plucker(val, '' as any)).toEqual(val);
+    });
+  });
+
+  it('should return appropriate Unit', () => {
+    RANDOM_VALUE_PRODUCERS.map(producer => producer(1)).forEach(val => {
+      const unit = createUnit(val);
+      const expectedUnitCtor =
+        (typeof val === 'boolean' && BoolUnit) ||
+        (typeof val === 'number' && NumUnit) ||
+        (typeof val === 'string' && StringUnit) ||
+        (Array.isArray(val) && ListUnit) ||
+        (isDict(val) && DictUnit) ||
+        GenericUnit;
+
+      expect(unit).toBeInstanceOf(expectedUnitCtor);
+    });
   });
 });

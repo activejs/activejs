@@ -270,11 +270,9 @@ describe(
         const ownProps = randKeys.filter(key => normalDictObj.hasOwnProperty(key));
         if (!isEmpty && ownProps.length) {
           const removedProps = {};
-          randKeys.forEach(key => {
-            if (normalDictObj.hasOwnProperty(key)) {
-              removedProps[key] = deepCopy(normalDictObj[key]);
-              delete normalDictObj[key];
-            }
+          ownProps.forEach(key => {
+            removedProps[key] = deepCopy(normalDictObj[key]);
+            delete normalDictObj[key];
           });
 
           expect(event).toBeInstanceOf(EventDictUnitDelete);

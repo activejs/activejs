@@ -1,7 +1,7 @@
 {
   "name": "@activejs/core",
   "description": "Pragmatic, Reactive State Management for JavaScript Apps",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "peerDependencies": {
     "rxjs": "^6.0.0"
   },

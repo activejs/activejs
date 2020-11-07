@@ -40,14 +40,13 @@ export class AsyncSystemBase<
    */
   readonly config: Readonly<AsyncSystemBaseConfig<Query, Data, Error>>;
 
-  // tslint:disable:variable-name
   /**
    * @internal please do not use.
    *
    * It works because all our Subjects and operations are synchronous.
    */
-  private _relationshipsWorking = true;
-  // tslint:enable:variable-name
+  private relationshipsAutoPaused = false;
+  private relationshipsManuallyPaused = false;
 
   /**
    * To check whether the inter-relationships among the member Units are active or not.
@@ -55,7 +54,7 @@ export class AsyncSystemBase<
    * @default `true`
    */
   get relationshipsWorking(): boolean {
-    return this._relationshipsWorking;
+    return !this.relationshipsAutoPaused && !this.relationshipsManuallyPaused;
   }
 
   /**
@@ -155,10 +154,10 @@ export class AsyncSystemBase<
    * @category Custom AsyncSystem
    */
   pauseRelationships(): void {
-    if (this._relationshipsWorking === false) {
+    if (this.relationshipsManuallyPaused === true) {
       return;
     }
-    this._relationshipsWorking = false;
+    this.relationshipsManuallyPaused = true;
     this.unitsEmitCountsBeforePausing = this.unitsEmitCounts();
   }
 
@@ -176,10 +175,10 @@ export class AsyncSystemBase<
    * @category Custom AsyncSystem
    */
   resumeRelationships(): void {
-    if (this._relationshipsWorking === true) {
+    if (this.relationshipsManuallyPaused === false) {
       return;
     }
-    this._relationshipsWorking = true;
+    this.relationshipsManuallyPaused = false;
     if (this.unitsEmitCountsBeforePausing.join() !== this.unitsEmitCounts().join()) {
       this.emit();
     }
@@ -220,7 +219,12 @@ export class AsyncSystemBase<
     });
 
     this.pendingUnit.future$.subscribe(isPending => {
-      this.toggleQueryUnitFreezeMaybe(isPending);
+      if (!this.relationshipsManuallyPaused) {
+        this.toggleQueryUnitFreezeMaybe(isPending);
+      }
+      if (this.relationshipsWorking) {
+        this.emit();
+      }
     });
   }
 
@@ -228,7 +232,7 @@ export class AsyncSystemBase<
    * @internal please do not use.
    */
   private executeQueryUnitRelationship() {
-    this._relationshipsWorking = false;
+    this.relationshipsAutoPaused = true;
 
     this.autoUpdatePendingValue(true);
 
@@ -239,7 +243,7 @@ export class AsyncSystemBase<
       this.errorUnit.clearValue();
     }
 
-    this._relationshipsWorking = true;
+    this.relationshipsAutoPaused = false;
     this.emit();
   }
 
@@ -247,7 +251,7 @@ export class AsyncSystemBase<
    * @internal please do not use.
    */
   private executeDataUnitRelationship() {
-    this._relationshipsWorking = false;
+    this.relationshipsAutoPaused = true;
 
     this.autoUpdatePendingValue(false);
 
@@ -258,7 +262,7 @@ export class AsyncSystemBase<
       this.queryUnit.clearValue();
     }
 
-    this._relationshipsWorking = true;
+    this.relationshipsAutoPaused = false;
     this.emit();
   }
 
@@ -266,7 +270,7 @@ export class AsyncSystemBase<
    * @internal please do not use.
    */
   private executeErrorUnitRelationship() {
-    this._relationshipsWorking = false;
+    this.relationshipsAutoPaused = true;
 
     this.autoUpdatePendingValue(false);
 
@@ -277,7 +281,7 @@ export class AsyncSystemBase<
       this.queryUnit.clearValue();
     }
 
-    this._relationshipsWorking = true;
+    this.relationshipsAutoPaused = false;
     this.emit();
   }
 

@@ -169,6 +169,18 @@ describe(
       let errorUnitEmitCount: number;
       let pendingUnitEmitCount: number;
 
+      const dispatchRandomValues = (): number => {
+        const someUnits = randomSelectMultiple([queryUnit, dataUnit, errorUnit, pendingUnit]);
+        return someUnits
+          .map(unit => {
+            const shouldDispatchDuplicate = randomBoolean();
+            return unit.dispatch(shouldDispatchDuplicate ? unit.value() : randomValidValue(unit), {
+              bypassDebounce: true,
+            });
+          })
+          .filter(didDispatch => didDispatch).length;
+      };
+
       beforeEach(() => {
         Configuration.reset();
 
@@ -181,9 +193,7 @@ describe(
         pendingUnit = asyncSystem.pendingUnit;
 
         if (randomBoolean()) {
-          randomSelectMultiple([queryUnit, dataUnit, errorUnit, pendingUnit]).forEach(unit => {
-            unit.dispatch(randomValidValue(unit), {bypassDebounce: true});
-          });
+          dispatchRandomValues();
         }
 
         systemEmitCount = asyncSystem.emitCount;
@@ -191,6 +201,11 @@ describe(
         dataUnitEmitCount = dataUnit.emitCount;
         errorUnitEmitCount = errorUnit.emitCount;
         pendingUnitEmitCount = pendingUnit.emitCount;
+      });
+
+      it('should emit when member Units emit', () => {
+        const successfulUnitDispatchCount = dispatchRandomValues();
+        expect(asyncSystem.emitCount).toBe(systemEmitCount + successfulUnitDispatchCount);
       });
 
       it('should have combined derived value of units', () => {
@@ -358,18 +373,17 @@ describe(
       });
 
       it('should pause relationships', () => {
+        if (randomBoolean()) {
+          queryUnit.freeze();
+        }
         asyncSystem.pauseRelationships();
         expect(asyncSystem.relationshipsWorking).toBe(false);
         asyncSystem.pauseRelationships(); // this should have no effect
 
-        const shouldDispatchDuplicate = randomBoolean();
-        const someUnits = randomSelectMultiple([queryUnit, dataUnit, errorUnit, pendingUnit]);
-        someUnits.forEach(unit => {
-          unit.dispatch(shouldDispatchDuplicate ? unit.value() : randomValue(), {
-            bypassDebounce: true,
-          });
-        });
+        const wasQueryUnitFrozen = queryUnit.isFrozen;
+        dispatchRandomValues();
 
+        expect(queryUnit.isFrozen).toBe(wasQueryUnitFrozen);
         expect(asyncSystem.emitCount).toBe(systemEmitCount);
         expect(asyncSystem.relationshipsWorking).toBe(false);
       });
@@ -378,15 +392,7 @@ describe(
         asyncSystem.pauseRelationships();
         expect(asyncSystem.relationshipsWorking).toBe(false);
 
-        const shouldDispatchDuplicate = randomBoolean();
-        const someUnits = randomSelectMultiple([queryUnit, dataUnit, errorUnit, pendingUnit]);
-        const someDidDispatch = someUnits
-          .map(unit =>
-            unit.dispatch(shouldDispatchDuplicate ? unit.value() : randomValue(), {
-              bypassDebounce: true,
-            })
-          )
-          .some(didDispatch => didDispatch);
+        const someDidDispatch: boolean = dispatchRandomValues() !== 0;
 
         asyncSystem.resumeRelationships();
         expect(asyncSystem.relationshipsWorking).toBe(true);

@@ -206,8 +206,8 @@ export class DictUnit<
     this.checkSerializabilityMaybe(sources);
 
     const dictShallowCopy = {...this.rawValue()};
-    const newProps = Object.assign({}, ...sources.map(source => this.deepCopyMaybe(source)));
-    this.updateValueAndCache(Object.assign(dictShallowCopy, newProps));
+    const newProps = Object.assign({}, ...sources);
+    this.updateValueAndCache(Object.assign(dictShallowCopy, this.deepCopyMaybe(newProps)));
 
     if (this.eventsSubject && !this.isMuted) {
       this.eventsSubject.next(new EventDictUnitAssign(sources, newProps));

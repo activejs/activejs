@@ -176,7 +176,7 @@ export abstract class Base<T> extends Observable<T> {
   replay(): void {
     this.emit(this.emittedValue);
 
-    if (this.eventsSubject) {
+    if (this.eventsSubject?.observers.length) {
       this.eventsSubject.next(new EventReplay(this.emittedValue));
     }
   }

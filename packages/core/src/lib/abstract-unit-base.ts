@@ -472,7 +472,7 @@ export abstract class UnitBase<T> extends Base<T> {
     this._cacheIndex = newIndex;
     this.updateValueAndCache(this._cachedValues[this.cacheIndex], null, true);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitJump(steps, newIndex));
     }
     return true;
@@ -525,7 +525,7 @@ export abstract class UnitBase<T> extends Base<T> {
     this._cachedValues.splice(start, deleteCount);
     this._cacheIndex = Math.max(0, this.cachedValuesCount - 1);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitClearCache(options));
     }
     return true;
@@ -546,7 +546,7 @@ export abstract class UnitBase<T> extends Base<T> {
     }
     this.updateValueAndCache(this.defaultValue());
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitClearValue());
     }
     return true;
@@ -569,7 +569,7 @@ export abstract class UnitBase<T> extends Base<T> {
     this.clearValue();
     this.clearCache(options);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitClear(options));
     }
   }
@@ -592,7 +592,7 @@ export abstract class UnitBase<T> extends Base<T> {
     }
     this.updateValueAndCache(this.initialValueRaw());
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitResetValue());
     }
     return true;
@@ -615,7 +615,7 @@ export abstract class UnitBase<T> extends Base<T> {
     this.resetValue();
     this.clearCache(options);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitReset(options));
     }
   }
@@ -642,7 +642,7 @@ export abstract class UnitBase<T> extends Base<T> {
     }
     this._isFrozen = true;
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitFreeze());
     }
   }
@@ -660,7 +660,7 @@ export abstract class UnitBase<T> extends Base<T> {
     }
     this._isFrozen = false;
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventUnitUnfreeze());
     }
   }
@@ -701,7 +701,7 @@ export abstract class UnitBase<T> extends Base<T> {
       this.emit();
       this.emitOnUnmute = null;
     }
-    if (this.eventsSubject) {
+    if (this.eventsSubject?.observers.length) {
       this.eventsSubject.next(new EventUnitUnmute());
     }
   }
@@ -721,7 +721,7 @@ export abstract class UnitBase<T> extends Base<T> {
     if (this.config.persistent === true) {
       remove(this.config.id, this.config.storage);
 
-      if (this.eventsSubject && !this.isMuted) {
+      if (this.eventsSubject?.observers.length && !this.isMuted) {
         this.eventsSubject.next(new EventUnitClearPersistedValue());
       }
 
@@ -819,13 +819,13 @@ export abstract class UnitBase<T> extends Base<T> {
     if (this.wouldDispatch(value, force)) {
       this.updateValueAndCache(this.deepCopyMaybe(value), options); // clone and dispatch
 
-      if (this.eventsSubject && !this.isMuted) {
+      if (this.eventsSubject?.observers.length && !this.isMuted) {
         this.eventsSubject.next(new EventUnitDispatch(value, options));
       }
       return true;
     }
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       const failReason: DispatchFailReason =
         (this.isFrozen && DispatchFailReason.FROZEN_UNIT) ||
         (this.isValidValue(value) &&

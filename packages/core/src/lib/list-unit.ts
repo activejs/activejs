@@ -133,7 +133,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     listShallowCopy[normalizeIndex(index, this.length)] = this.deepCopyMaybe(item);
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitSet(index, item));
     }
   }
@@ -210,7 +210,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     this.updateValueAndCache(listShallowCopy);
     removedItems.reverse();
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitRemove(indices, removedItems));
     }
     return removedItems;
@@ -280,7 +280,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     });
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitDelete(indices, deletedItems));
     }
     return deletedItems;
@@ -437,7 +437,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     const newLength = listShallowCopy.push(...this.deepCopyMaybe(items));
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitPush(items));
     }
     return newLength;
@@ -462,7 +462,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     const poppedItem = this.deepCopyMaybe(listShallowCopy.pop());
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitPop(poppedItem));
     }
     return poppedItem;
@@ -487,7 +487,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     const shiftedItem = this.deepCopyMaybe(listShallowCopy.shift());
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitShift(shiftedItem));
     }
     return shiftedItem;
@@ -515,7 +515,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     const newLength = listShallowCopy.unshift(...this.deepCopyMaybe(items));
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitUnshift(items));
     }
     return newLength;
@@ -551,7 +551,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     );
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitSplice(start, deleteCount, removedItems, items));
     }
     return removedItems;
@@ -583,7 +583,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     listShallowCopy.fill(this.deepCopyMaybe(item), start, end);
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitFill(item, start, end));
     }
   }
@@ -613,7 +613,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     listShallowCopy.copyWithin(target, start, end);
     this.updateValueAndCache(listShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitCopyWithin(target, start, end));
     }
   }
@@ -636,7 +636,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
     const listShallowCopyReversed = [...this.rawValue()].reverse();
     this.updateValueAndCache(listShallowCopyReversed);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitReverse());
     }
   }
@@ -664,7 +664,7 @@ export class ListUnit<Item> extends NonPrimitiveUnitBase<Item[]> {
         : [...this.rawValue()].sort();
     this.updateValueAndCache(listShallowCopySorted);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventListUnitSort());
     }
   }

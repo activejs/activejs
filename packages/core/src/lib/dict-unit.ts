@@ -108,7 +108,7 @@ export class DictUnit<
     dictShallowCopy[key] = this.deepCopyMaybe(value);
     this.updateValueAndCache(dictShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventDictUnitSet(key, value));
     }
   }
@@ -143,7 +143,7 @@ export class DictUnit<
 
     this.updateValueAndCache(dictShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventDictUnitDelete(removedProps));
     }
     return removedProps;
@@ -180,7 +180,7 @@ export class DictUnit<
 
     this.updateValueAndCache(dictShallowCopy);
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventDictUnitDelete(removedProps));
     }
     return removedProps;
@@ -209,7 +209,7 @@ export class DictUnit<
     const newProps = Object.assign({}, ...sources);
     this.updateValueAndCache(Object.assign(dictShallowCopy, this.deepCopyMaybe(newProps)));
 
-    if (this.eventsSubject && !this.isMuted) {
+    if (this.eventsSubject?.observers.length && !this.isMuted) {
       this.eventsSubject.next(new EventDictUnitAssign(sources, newProps));
     }
   }
